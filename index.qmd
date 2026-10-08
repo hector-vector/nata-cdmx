@@ -11,7 +11,7 @@ format:
 
 In 2023, my three-year-old caught a respiratory bug that turned into pneumonia. We spent a week in the hospital. Listening to the rhythmic hum of the monitors in the ward, I felt a very specific kind of exhaustion and anxiety—one that parents in Mexico City intimately understand when the gray haze settles heavily over the valley. 
 
-But fear is paralyzing, and it isn't a practical daily strategy. We navigate a city where millions of people commute for hours across the basin. We pack into the Metro and drive our kids to schools far from home because that is the reality of our geography and our economy. We cannot individually change the topography, and most of us cannot simply relocate. We live where we live. 
+But fear is paralyzing, and it isn't a practical daily strategy. We navigate a city where millions of people commute for hours across the basin. We pack into the Metro and drive our kids to schools far from home because that is the reality of our geography and our economy. We cannot individually change the topography, and most of us cannot simply relocate. We live where we live.
 
 What we can do is understand the invisible machine we are breathing. I analyzed five years of hourly atmospheric data from the city's monitoring networks. Because physical sensors frequently break during extreme weather, I had to mathematically bridge thousands of hours of missing telemetry to rescue the historical record. By patching these millions of data points together, we can map exactly how weather and traffic interact in our specific neighborhoods. Moving past the generic, color-coded warnings on our weather apps allows us to make tactical decisions on the margins of our daily routines to protect our health. 
 
@@ -70,7 +70,7 @@ Finally, there is the wind. It seems intuitive that a strong breeze clears out t
 
 This final chart tracks how wind clears out PM2.5 soot. The blue and red lines represent the rainy season and the cold-dry winter. As the wind speeds up toward the right side of the chart, the pollution drops beautifully.
 
-But look at the green line, which represents the hot, dry spring from March to June. No matter how hard the wind blows, the pollution stays high. During these months, the wind isn't flushing the city. Instead, it is picking up dry soil from the lake beds—slamming the Eastern Sprawl with dust—and dragging ash from peripheral forest fires directly into the Highland Periphery and Industrial Flatlands.
+But look at the green line, which represents the hot, dry spring from March to June. No matter how hard the wind blows, the pollution stays high. During these months, the wind isn't flushing the city. Instead, it is picking up dry soil from the lake beds (slamming the Eastern Sprawl with dust) and dragging ash from peripheral forest fires directly into the Highland Periphery and Industrial Flatlands.
 
 Because of this, our ventilation strategies need to change with the seasons. In the winter, a windy afternoon is the perfect time to open your windows and air out your apartment. But in the spring, no matter what part of the city you live in, when the wind howls, keep them closed.
 
