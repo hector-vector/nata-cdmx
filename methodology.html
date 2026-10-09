@@ -186,15 +186,19 @@ window.Quarto = {
   <li><a href="#redefining-the-spatial-geography" id="toc-redefining-the-spatial-geography" class="nav-link" data-scroll-target="#redefining-the-spatial-geography">2. Redefining the Spatial Geography</a></li>
   <li><a href="#data-engineering-imputation-cascade" id="toc-data-engineering-imputation-cascade" class="nav-link" data-scroll-target="#data-engineering-imputation-cascade">3. Data Engineering &amp; Imputation Cascade</a>
   <ul class="collapse">
-  <li><a href="#the-biological-reality-fix" id="toc-the-biological-reality-fix" class="nav-link" data-scroll-target="#the-biological-reality-fix">3.1 The Biological Reality Fix</a></li>
-  <li><a href="#the-imputation-cascade-the-missing-indicator-method" id="toc-the-imputation-cascade-the-missing-indicator-method" class="nav-link" data-scroll-target="#the-imputation-cascade-the-missing-indicator-method">3.2 The Imputation Cascade (The Missing-Indicator Method)</a></li>
-  <li><a href="#statistical-process-control-spc" id="toc-statistical-process-control-spc" class="nav-link" data-scroll-target="#statistical-process-control-spc">3.3 Statistical Process Control (SPC)</a></li>
-  <li><a href="#feature-standardization" id="toc-feature-standardization" class="nav-link" data-scroll-target="#feature-standardization">3.4 Feature Standardization</a></li>
+  <li><a href="#mapping-the-commute-the-temporal-architecture" id="toc-mapping-the-commute-the-temporal-architecture" class="nav-link" data-scroll-target="#mapping-the-commute-the-temporal-architecture">3.1 Mapping the Commute (The Temporal Architecture)</a></li>
+  <li><a href="#the-biological-reality-fix" id="toc-the-biological-reality-fix" class="nav-link" data-scroll-target="#the-biological-reality-fix">3.2 The Biological Reality Fix</a></li>
+  <li><a href="#the-imputation-cascade-the-missing-indicator-method" id="toc-the-imputation-cascade-the-missing-indicator-method" class="nav-link" data-scroll-target="#the-imputation-cascade-the-missing-indicator-method">3.3 The Imputation Cascade (The Missing-Indicator Method)</a></li>
+  <li><a href="#statistical-process-control-spc" id="toc-statistical-process-control-spc" class="nav-link" data-scroll-target="#statistical-process-control-spc">3.4 Statistical Process Control (SPC)</a></li>
+  <li><a href="#feature-standardization" id="toc-feature-standardization" class="nav-link" data-scroll-target="#feature-standardization">3.5 Feature Standardization</a></li>
   </ul></li>
-  <li><a href="#bayesian-architecture" id="toc-bayesian-architecture" class="nav-link" data-scroll-target="#bayesian-architecture">4. Bayesian Architecture</a></li>
+  <li><a href="#bayesian-architecture" id="toc-bayesian-architecture" class="nav-link" data-scroll-target="#bayesian-architecture">4. Bayesian Architecture</a>
+  <ul class="collapse">
+  <li><a href="#the-day-of-week-confounder" id="toc-the-day-of-week-confounder" class="nav-link" data-scroll-target="#the-day-of-week-confounder">The Day-of-Week Confounder</a></li>
+  </ul></li>
   <li><a href="#hamiltonian-monte-carlo-diagnostics" id="toc-hamiltonian-monte-carlo-diagnostics" class="nav-link" data-scroll-target="#hamiltonian-monte-carlo-diagnostics">5. Hamiltonian Monte Carlo Diagnostics</a>
   <ul class="collapse">
-  <li><a href="#divergent-transitions" id="toc-divergent-transitions" class="nav-link" data-scroll-target="#divergent-transitions">5.1 Divergent Transitions</a></li>
+  <li><a href="#divergent-transitions-treedepth" id="toc-divergent-transitions-treedepth" class="nav-link" data-scroll-target="#divergent-transitions-treedepth">5.1 Divergent Transitions &amp; Treedepth</a></li>
   <li><a href="#posterior-predictive-checks-ecdf" id="toc-posterior-predictive-checks-ecdf" class="nav-link" data-scroll-target="#posterior-predictive-checks-ecdf">5.2 Posterior Predictive Checks (ECDF)</a></li>
   </ul></li>
   <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">6. Limitations</a></li>
@@ -229,19 +233,19 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="introduction-scope">1. Introduction &amp; Scope</h2>
 <p>This project is not an attempt to forecast tomorrow’s Air Quality Index or provide real-time spatial interpolation. The <em>Sistema de Monitoreo Atmosférico</em> (SIMAT) already operates a dense sensor infrastructure, and platforms like Google Maps are far better suited for real-time tracking across sparse geographical areas.</p>
 <p>Rather, I seek to understand the physical realities of the air we breathe in Mexico City. My goal is to provide actionable, structural insights for residents who want to know how everyday factors—like a hot afternoon, a cold weekend, or a windy morning—actually dictate the toxicity of their specific environment.</p>
-<p>To answer these questions using SIMAT’s public data, this analysis employs Generative Bayesian Modeling via Stan and <code>brms</code>. I chose this framework because Bayesian models are exceptionally good at handling complex, interacting physical constraints transparently. By explicitly modeling the relationships between altitude, temperature, wind, and human commuting patterns, this analysis maps the basin’s macro-dynamics.</p>
+<p>To answer these questions using SIMAT’s public data, this analysis employs Generative Bayesian Modeling via Stan and <code>brms</code>. I chose this framework because Bayesian models are good at handling complex, interacting physical constraints transparently. By explicitly modeling the relationships between altitude, temperature, wind, and human commuting patterns, this analysis maps the basin’s macro-dynamics.</p>
 <hr>
 </section>
 <section id="redefining-the-spatial-geography" class="level2">
 <h2 class="anchored" data-anchor-id="redefining-the-spatial-geography">2. Redefining the Spatial Geography</h2>
-<p>The <em>Sistema de Monitoreo Atmosférico</em> (SIMAT) classifies its stations using <em>Zonas Climáticas Urbanas</em> (ZCU). However, ZCUs measure micro-meteorology—specifically surface roughness, building height, and localized heat islands within a 500-meter radius.</p>
+<p>The <em>Sistema de Monitoreo Atmosférico</em> (SIMAT) classifies its stations using <em>Zonas Climáticas Urbanas</em> (ZCU). However, ZCUs measure micro-meteorology. Specifically, surface roughness, building height, and localized heat islands within a 500-meter radius.</p>
 <p>While excellent for sensor calibration, these micro-climates are insufficient for modeling macro-atmospheric phenomena like the photochemical production of Ozone or the basin-wide flushing of PM2.5. I therefore abandoned the default political boundaries and micro-scales, re-mapping the 34 RAMA stations into five <strong>Urban Environments</strong>.</p>
 <p>To do this, I manually audited the metadata for each station using SIMAT’s <a href="http://www.aire.cdmx.gob.mx/descargas/publicaciones/simat-entornos.pdf">Caracterización del Entorno Físico report (2021)</a>. I extracted three specific physical constraints for each site: <em>Topografía del relieve</em> (Valley vs.&nbsp;Mountain), <em>Zona Climática Urbana</em> (ZCU 1-7), and <em>Densidad del tráfico</em> (Local Traffic Density). By synthesizing these physical realities, I grouped the stations into the following macro-regional basins:</p>
 <ol type="1">
-<li><strong>The Industrial Flatlands</strong> (<em>Plancha Industrial</em>): The heavily paved, factory-dense north. Stations like Xalostoc (XAL) and Tlalnepantla (TLA), characterized by <em>Valle</em> topography, high diesel traffic, and proximity to industrial corridors.</li>
+<li><strong>The Industrial Flatlands</strong> (<em>Plancha Industrial</em>): The heavily paved, factory-dense north. Stations like Xalostoc (XAL) and Tlalnepantla (TLA), characterized by their location on the flat basin floor, high diesel traffic, and proximity to industrial corridors.</li>
 <li><strong>The Urban Core</strong> (<em>Núcleo Urbano</em>): The high-density commercial/residential center. Stations like Merced (MER) and Benito Juárez (BJU), featuring ZCU 2 and 3 classifications (high-density concrete) and unyielding traffic.</li>
 <li><strong>The Highland Periphery</strong> (<em>Periferia Verde</em>): The semi-rural, vegetated mountain slopes. Stations like Ajusco Medio (AJM) and Cuajimalpa (CUA), characterized by <em>Montaña</em> topography, ZCU 6/7, and high vegetative cover.</li>
-<li><strong>The Eastern Sprawl</strong> (<em>Expansión Oriental</em>): The mixed-density residential expansion, such as FES Aragón (FAR) and Chalco (CHO), located in medium-density valleys with distinct wind fetches.</li>
+<li><strong>The Eastern Sprawl</strong> (<em>Expansión Oriental</em>): The mixed-density residential expansion, such as FES Aragón (FAR) and Chalco (CHO), located on the dry, sprawling plains of the eastern basin with distinct wind fetches.</li>
 <li><strong>The Photochemical Basin</strong> (<em>Trampa Fotoquímica</em>): Topographic bottlenecks in the south/southwest, like Pedregal (PED), where prevailing northern winds are thought to deposit chemical precursors against the mountains.</li>
 </ol>
 <hr>
@@ -249,9 +253,17 @@ window.Quarto = {
 <section id="data-engineering-imputation-cascade" class="level2">
 <h2 class="anchored" data-anchor-id="data-engineering-imputation-cascade">3. Data Engineering &amp; Imputation Cascade</h2>
 <p>I extracted 5 years of hourly data (2021-2025) from two primary networks. Pollutant concentrations were pulled from the <a href="http://www.aire.cdmx.gob.mx/default.php?opc=%27aKBhnmI=%27&amp;opcion=Zg==">Red Automática de Monitoreo Atmosférico (RAMA)</a>, while meteorological parameters were sourced directly from the <a href="http://www.aire.cdmx.gob.mx/default.php?opc=%27aKBi%27">Red de Meteorología y Radiación Solar (REDMET)</a>.</p>
-<p>To evaluate the observational contrast of commuter traffic, I scraped the historical school calendars from the <a href="https://www.planeacion.sep.gob.mx/CalendarioHistorico.aspx">Secretaría de Educación Pública (SEP)</a> to build a custom school calendar for the 2021-2025 period, flagging active school days versus holidays and weekends.</p>
+<section id="mapping-the-commute-the-temporal-architecture" class="level3">
+<h3 class="anchored" data-anchor-id="mapping-the-commute-the-temporal-architecture">3.1 Mapping the Commute (The Temporal Architecture)</h3>
+<p>To evaluate the observational contrast of commuter traffic, I scraped the historical school calendars from the <a href="https://www.planeacion.sep.gob.mx/CalendarioHistorico.aspx">Secretaría de Educación Pública (SEP)</a>. However, simply flagging days as “school” or “not school” contaminates the underlying economic reality of the city. To preserve the statistical integrity of the traffic pulses, the calendar was parsed into strict, mutually exclusive hierarchical categories:</p>
+<ul>
+<li><strong>Macroeconomic Shutdowns (<code>is_holiday</code>):</strong> Comprises Federal Statutory Holidays (<em>Ley Federal del Trabajo</em>) alongside customary city-wide shutdowns (e.g., Holy Thursday, Good Friday, and Day of the Dead). These represent total commercial, government, and educational shutdowns where basin-wide traffic collapses.</li>
+<li><strong>The School Run (<code>is_school_day</code>):</strong> Represents days where both standard adult commuters and the massive student drop-off rush are active.</li>
+<li><strong>The Reference Baseline:</strong> Days where adult professionals commute, but students remain home (e.g., Summer Breaks, monthly <em>Consejo Técnico Escolar</em> Fridays, and SEP-exclusive suspensions like <em>Día del Maestro</em>). Because the natural weekend rhythm is explicitly controlled for via a day-of-the-week variable, these “student-absent weekdays” form the pure underlying traffic baseline against which the school run is measured.</li>
+</ul>
+</section>
 <section id="the-biological-reality-fix" class="level3">
-<h3 class="anchored" data-anchor-id="the-biological-reality-fix">3.1 The Biological Reality Fix</h3>
+<h3 class="anchored" data-anchor-id="the-biological-reality-fix">3.2 The Biological Reality Fix</h3>
 <p>Human lungs react differently to different pollutants. During the Exploratory Data Analysis phase, the temporal distributions of the two pollutants dictated entirely different aggregation strategies:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -265,7 +277,7 @@ window.Quarto = {
 </ul>
 </section>
 <section id="the-imputation-cascade-the-missing-indicator-method" class="level3">
-<h3 class="anchored" data-anchor-id="the-imputation-cascade-the-missing-indicator-method">3.2 The Imputation Cascade (The Missing-Indicator Method)</h3>
+<h3 class="anchored" data-anchor-id="the-imputation-cascade-the-missing-indicator-method">3.3 The Imputation Cascade (The Missing-Indicator Method)</h3>
 <p>Prior to imputation, meteorological telemetry was missing for a significant portion of our valid pollutant days. The <code>is_imputed_met</code> flag marks the rows rescued by this process. This is a day-level flag that triggers <code>TRUE</code> when any single hour that day lacked a raw temperature, wind, or RH reading.</p>
 <table class="caption-top table">
 <colgroup>
@@ -343,13 +355,13 @@ window.Quarto = {
 <p>The indicator flag absorbs average differences on borrowed days, but a single deterministic fill doesn’t propagate imputation uncertainty, so temperature and wind slopes are probably somewhat attenuated and their intervals optimistic.</p>
 </section>
 <section id="statistical-process-control-spc" class="level3">
-<h3 class="anchored" data-anchor-id="statistical-process-control-spc">3.3 Statistical Process Control (SPC)</h3>
+<h3 class="anchored" data-anchor-id="statistical-process-control-spc">3.4 Statistical Process Control (SPC)</h3>
 <p>Air quality monitors occasionally transmit physically impossible telemetry. To prevent sensor malfunction spikes from skewing the hierarchical slopes, I passed the data through a Statistical Process Control (SPC) filter. To prevent extreme outliers from stretching the control limits, I utilized a robust control chart methodology based on the Interquartile Range, as demonstrated by <span title="Rocke, D. M. (1989). Robust control charts. Technometrics, 31(2), 173-184." style="border-bottom: 1px dotted #888; cursor: help;">David Rocke (1989)</span>.</p>
 <p>The filter works per station × pollutant × hour on a rolling window of the current plus up to 29 previous valid days. It flags values outside <span class="math inline">\(Q1 - 1.5 \cdot IQR\)</span> and <span class="math inline">\(Q3 + 1.5 \cdot IQR\)</span>.</p>
 <p>Flagged hours are removed before daily aggregation, which also removes their concurrent weather from the daily maximum calculations. While this effectively removes glitches, it can also trim real short peaks, and the ozone posterior predictive check’s lighter observed upper tail is consistent with that truncation. The filter flagged 17,462 hours (3.2% of hours entering the filter) for PM2.5 and 40,028 hours (3.6%) for Ozone.</p>
 </section>
 <section id="feature-standardization" class="level3">
-<h3 class="anchored" data-anchor-id="feature-standardization">3.4 Feature Standardization</h3>
+<h3 class="anchored" data-anchor-id="feature-standardization">3.5 Feature Standardization</h3>
 <p>To facilitate Hamiltonian Monte Carlo convergence, all continuous physical predictors were standardized into Z-scores (<span class="math inline">\(z = \frac{x - \mu}{\sigma}\)</span>). Temperature was defined as the daily maximum (max of hourly values), while wind and relative humidity were defined as daily means. Z-scores were computed separately within each pollutant’s dataset.</p>
 <p>The final marginal effects reported in the auditor table are back-transformed into their natural physical units. The transformations use each pollutant’s own mean and standard deviation. Specifically, the estimates are the average change from a +1 SD shift divided by the SD, which gives approximate average slopes per unit.</p>
 <hr>
@@ -360,10 +372,13 @@ window.Quarto = {
 <p>Pollutant concentrations are strictly positive and possess long right tails. I therefore modeled the data using a log-normal data-generating process:</p>
 <p><span class="math display">\[Y_i \sim \text{LogNormal}(\mu_i, \sigma)\]</span> <span class="math display">\[\mu_i = \alpha_{j[i]} + \mathbf{X}_i \boldsymbol{\beta} + \mathbf{Z}_i \boldsymbol{\gamma}_{j[i]}\]</span></p>
 <p>Where <span class="math inline">\(\alpha_{j[i]}\)</span> represents the varying baseline intercept for each of the 5 Urban Environments, <span class="math inline">\(\mathbf{X}_i \boldsymbol{\beta}\)</span> contains the fixed population-level effects, and <span class="math inline">\(\mathbf{Z}_i \boldsymbol{\gamma}_{j[i]}\)</span> represents the hierarchically varying slopes for temperature and wind across the different environments.</p>
+<section id="the-day-of-week-confounder" class="level3">
+<h3 class="anchored" data-anchor-id="the-day-of-week-confounder">The Day-of-Week Confounder</h3>
+<p>Exploratory variance diagnostics revealed that the day of the week dictates a massive baseline shift in urban pollution, with atmospheric load building cumulatively from Monday and peaking violently on Saturday before resetting on Sunday. To prevent this cycle from confounding the traffic indicators, <code>day_of_week_f</code> was injected as a foundational categorical baseline.</p>
 <p>I built the models progressively—from a base varying-intercept model, to a linear varying-slope model, to the final interaction model—to explicitly test the following:</p>
 <ul>
-<li><strong>Ozone (The Heat Catalyst):</strong> <span class="math inline">\(\beta (\text{School\_Day}_i \times \text{Temp}_i)\)</span>. This tests whether the effect of the school-day commute varies with the daily maximum temperature.</li>
-<li><strong>PM2.5 (The Wind Scrubber):</strong> <span class="math inline">\(\beta (\text{Season}_i \times \text{Wind}_i)\)</span>. This tests whether the flushing effect of the wind varies by season.</li>
+<li><strong>Ozone (The Heat Catalyst):</strong> <span class="math inline">\(\beta (\text{School\_Day}_i \times \text{Temp}_i)\)</span>. This tests whether the suppressive titration effect of the school-day commute reverses into photochemical generation under extreme heat.</li>
+<li><strong>PM2.5 (The Wind Scrubber):</strong> <span class="math inline">\(\beta (\text{Season}_i \times \text{Wind}_i)\)</span>. This tests whether the flushing effect of the wind breaks down during the hot, dry spring.</li>
 </ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Decoupled Priors for Lognormal Baselines</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>pm25_priors <span class="ot">=</span> <span class="fu">c</span>(</span>
@@ -382,7 +397,7 @@ window.Quarto = {
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Terminal Interaction Model (Ozone)</span></span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>m_o3_interaction <span class="ot">=</span> <span class="fu">brm</span>(</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> daily_metric <span class="sc">~</span> season <span class="sc">+</span> is_school_day <span class="sc">*</span> z_temp <span class="sc">+</span> is_holiday <span class="sc">+</span> is_imputed_met <span class="sc">+</span> </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> daily_metric <span class="sc">~</span> season <span class="sc">+</span> day_of_week_f <span class="sc">+</span> is_school_day <span class="sc">*</span> z_temp <span class="sc">+</span> is_holiday <span class="sc">+</span> is_imputed_met <span class="sc">+</span> </span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    z_alt <span class="sc">+</span> z_wind <span class="sc">+</span> z_rh <span class="sc">+</span></span>
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span> <span class="sc">+</span> z_temp <span class="sc">+</span> z_wind <span class="sc">|</span> archetype),</span>
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> o3_data,</span>
@@ -396,7 +411,7 @@ window.Quarto = {
 <span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Terminal Interaction Model (PM2.5)</span></span>
 <span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>m_pm25_interaction <span class="ot">=</span> <span class="fu">brm</span>(</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> daily_metric <span class="sc">~</span> season <span class="sc">*</span> z_wind <span class="sc">+</span> is_school_day <span class="sc">+</span> is_holiday <span class="sc">+</span> is_imputed_met <span class="sc">+</span> </span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> daily_metric <span class="sc">~</span> season <span class="sc">*</span> z_wind <span class="sc">+</span> day_of_week_f <span class="sc">+</span> is_school_day <span class="sc">+</span> is_holiday <span class="sc">+</span> is_imputed_met <span class="sc">+</span> </span>
 <span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    z_alt <span class="sc">+</span> z_temp <span class="sc">+</span> z_rh <span class="sc">+</span></span>
 <span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span> <span class="sc">+</span> z_temp <span class="sc">+</span> z_wind <span class="sc">|</span> archetype),</span>
 <span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> pm25_data,</span>
@@ -409,19 +424,21 @@ window.Quarto = {
 <span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <hr>
 </section>
+</section>
 <section id="hamiltonian-monte-carlo-diagnostics" class="level2">
 <h2 class="anchored" data-anchor-id="hamiltonian-monte-carlo-diagnostics">5. Hamiltonian Monte Carlo Diagnostics</h2>
-<p>The terminal models compiled cleanly, running 4 chains of 2,000 iterations. The diagnostic parameters confirm reliable Markov chain Monte Carlo estimation. For both models, every parameter achieved an <span class="math inline">\(\hat{R} \le 1.01\)</span> convergence metric. The Effective Sample Sizes comfortably exceeded the 400-draw threshold required for stable posterior inference, with the <code>Bulk_ESS</code> ranging from 1,163 to over 8,000 across parameters. The BFMI (Bayesian Fraction of Missing Information) energy diagnostics confirmed efficient exploration of the parameter space, with values ranging from 0.79 to 0.93 across all chains.</p>
-<section id="divergent-transitions" class="level3">
-<h3 class="anchored" data-anchor-id="divergent-transitions">5.1 Divergent Transitions</h3>
-<p>During the sampling of the PM2.5 interaction model, the backend reported a single divergent transition in 4,000 post-warmup draws. The Ozone model sampled flawlessly with zero divergences.</p>
+<p>The terminal models compiled cleanly, running 4 chains of 2,000 iterations. The diagnostic parameters confirm reliable Markov chain Monte Carlo estimation. For both models, every parameter achieved an <span class="math inline">\(\hat{R} \le 1.01\)</span> convergence metric. The Effective Sample Sizes comfortably exceeded the 400-draw threshold required for stable posterior inference, with the <code>Bulk_ESS</code> ranging from 1,096 to over 8,100 across parameters. The BFMI (Bayesian Fraction of Missing Information) energy diagnostics confirmed efficient exploration of the parameter space, with values ranging from 0.82 to 1.00 across all chains.</p>
+<section id="divergent-transitions-treedepth" class="level3">
+<h3 class="anchored" data-anchor-id="divergent-transitions-treedepth">5.1 Divergent Transitions &amp; Treedepth</h3>
+<p>During the sampling of the PM2.5 interaction model, the backend reported a single divergent transition (0.0%) and hit the maximum treedepth limit on 8% of transitions. The Ozone model sampled with zero divergences but hit the maximum treedepth limit on 38% of its transitions.</p>
+<p>Because the models must estimate a complex covariance matrix for the random slopes across only 5 archetypes, the NUTS sampler was forced to take very small steps (<code>adapt_delta = 0.99</code>). Hitting the treedepth limit under these conditions indicates computational inefficiency, not geometric bias. The <span class="math inline">\(\hat{R} \le 1.01\)</span> values and high ESS metrics confirm that the sampler successfully extracted valid inferences despite the sluggish traversal.</p>
 <p>As noted by <span title="Betancourt, M. (2018). A conceptual introduction to Hamiltonian Monte Carlo. arXiv preprint arXiv:1701.02434." style="border-bottom: 1px dotted #888; cursor: help;">Michael Betancourt (2018)</span>, a confluence of pathologies “is advantageous in practice because we can use the easily-observed divergences to identify the more subtle statistical pathologies.” To determine whether the single PM2.5 divergence represented a trapped sampler, I mapped the energy distributions and hierarchical funnels:</p>
 <p><img src="plots/04_divergence_energy_pm25.png" class="img-fluid" alt="PM2.5 Energy Diagnostic (BFMI)"> <img src="plots/04_divergence_funnel_pm25.png" class="img-fluid" alt="PM2.5 Hierarchical Funnel Checks"></p>
-<p>Looking at the funnel checks, the single PM2.5 divergence sits in the sparse upper tail of the wind-slope plot (<span class="math inline">\(b\_z\_wind \approx +0.03\)</span>), not at the funnel neck, and remains hidden inside the dense cloud on the intercept plot. This is an isolated event in a sparse region, not a cluster at low variance. While a single divergence in the PM2.5 model isn’t alarming by itself, mild geometry in the wind slope isn’t ruled out.</p>
+<p>Looking at the funnel checks, the single PM2.5 divergence sits comfortably inside the main probability mass of both parameters, rather than in the sparse tails or at the pathological funnel necks (<span class="math inline">\(sd \approx 0\)</span>). In the wind-slope plot, it is located near <span class="math inline">\(b\_z\_wind \approx -0.05\)</span> and <span class="math inline">\(sd \approx 0.15\)</span>, while in the intercept plot, it rests near the upper edge of the dense cloud at <span class="math inline">\(sd \approx 0.19\)</span>. Because this only happened once within a completely normal range of values, it represents a minor calculation glitch caused by the sampler taking extremely small steps (<code>adapt_delta = 0.99</code>), rather than a fundamental flaw in the model.</p>
 </section>
 <section id="posterior-predictive-checks-ecdf" class="level3">
 <h3 class="anchored" data-anchor-id="posterior-predictive-checks-ecdf">5.2 Posterior Predictive Checks (ECDF)</h3>
-<p>Because pollutant concentrations are Log-Normal, I utilized Empirical Cumulative Distribution Function (ECDF) overlays for the posterior predictive checks to avoid density smoothing artifacts.</p>
+<p>Because pollutant concentrations are strictly positive and right-skewed, I approximated the underlying data-generating process using a Log-Normal family. I utilized Empirical Cumulative Distribution Function (ECDF) overlays for the posterior predictive checks to avoid density smoothing artifacts.</p>
 <p><img src="plots/03b_posterior_check_pm25_ecdf.png" class="img-fluid" alt="Posterior Predictive Check: PM2.5"> <img src="plots/03b_posterior_check_o3_ecdf.png" class="img-fluid" alt="Posterior Predictive Check: Ozone"></p>
 <p>The ECDF confirms PM2.5 fits closely, with a slightly heavier predicted upper tail. Ozone captures the overall shape but sits about 4–5 ppb low around the median and predicts a heavier upper tail than observed, so absolute ppb values are approximate.</p>
 <hr>
@@ -434,7 +451,7 @@ window.Quarto = {
 <li><strong>Commuting Proxy:</strong> The school calendar is utilized as a proxy for weekday commuting, which is inherently entangled with vacation seasonality.</li>
 <li><strong>Imputation &amp; Filtering:</strong> As detailed in Section 3, the deterministic meteorological imputation likely attenuates slopes, and the IQR anomaly filter clips genuine physical extremes.</li>
 <li><strong>Unobserved Covariates:</strong> There is no solar radiation, cloud cover, or continuous wind-direction data in the model, meaning statements regarding photochemistry and directional transport are interpretive mechanisms rather than direct observations.</li>
-<li><strong>Crossover Point Estimate:</strong> The temperature threshold where school traffic’s association with ozone reverses, reported in the visual findings, is a point estimate. The model’s interval explicitly excludes zero only below roughly 27°C and above roughly 33°C.</li>
+<li><strong>Crossover Point Estimate:</strong> The temperature threshold where school traffic’s association with ozone reverses, reported in the visual findings, is a point estimate. The model’s interval explicitly excludes zero only below roughly 24°C and above roughly 30°C.</li>
 <li><strong>Reference Baseline:</strong> The “Typical Day” environment baseline calculated in the visualizations is defined by holding continuous covariates at their mean and categorical values at their mode. Specifically, the reference condition evaluates a standard, non-holiday school day during the Rainy season (<em>Lluvias</em>). Continuous physical variables are held precisely at their dataset means: a daily maximum temperature of approximately 22.4°C, a daily mean wind speed of 2.0 m/s, a relative humidity of 48-50%, and an average station altitude of ~2,340 meters.</li>
 </ul>
 <hr>
@@ -442,7 +459,7 @@ window.Quarto = {
 <section id="the-auditor-table" class="level2">
 <h2 class="anchored" data-anchor-id="the-auditor-table">7. The Auditor Table</h2>
 <p>To provide full transparency on the raw mathematical slopes, the un-scaled marginal effects derived via <code>marginaleffects::avg_comparisons()</code> are provided below. All continuous variables have been back-transformed from standard deviations to physical, natural units.</p>
-<p>The intervals are 95% posterior credible intervals (equal-tailed by default). Note that “Excludes Zero” does not imply the magnitude of the effect is certain, given the limitations discussed in Section 6. The data shows wind (roughly −12 ppb per m/s) and heat (roughly +1.6 ppb per °C) are associated with the largest shifts in peak ozone.</p>
+<p>The baseline weekly cycle (Tuesday through Friday) is omitted for clarity, but the <strong>Saturday Peak</strong> and <strong>Sunday Reset</strong> contrasts are preserved to demonstrate the massive atmospheric accumulation that occurs at the end of the workweek before traffic subsides. The intervals are 95% posterior credible intervals (equal-tailed by default). Note that “Excludes Zero” does not imply the magnitude of the effect is certain, given the limitations discussed in Section 6. The data shows wind (roughly −12 ppb per m/s) and heat (roughly +1.6 ppb per °C) are associated with the largest shifts in peak ozone.</p>
 <p>The holiday and school day metrics are mutually exclusive indicators, both compared against weekends and breaks. Calculations are based on a random sample of 1,000 days per pollutant (seed 123).</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -469,41 +486,41 @@ window.Quarto = {
 <tr class="even">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Data Imputation Used</td>
-<td style="text-align: right;"><span style="color: firebrick;">-1.21</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-1.66</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.76</span></td>
+<td style="text-align: right;"><span style="color: firebrick;">-1.2</span></td>
+<td style="text-align: right;"><span style="color: firebrick;">-1.63</span></td>
+<td style="text-align: right;"><span style="color: firebrick;">-0.78</span></td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Holiday Traffic (vs. Breaks/Weekends)</td>
-<td style="text-align: right;"><span style="color: firebrick;">-1.75</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-3.22</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.24</span></td>
-<td style="text-align: left;">Excludes Zero</td>
+<td style="text-align: right;"><span style="color: firebrick;">-0.36</span></td>
+<td style="text-align: right;"><span style="color: firebrick;">-1.66</span></td>
+<td style="text-align: right;">1.03</td>
+<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Hot-Dry Spring (vs. Winter)</td>
-<td style="text-align: right;">13.71</td>
-<td style="text-align: right;">13.06</td>
-<td style="text-align: right;">14.36</td>
+<td style="text-align: right;">13.74</td>
+<td style="text-align: right;">13.1</td>
+<td style="text-align: right;">14.39</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Max Temperature (+1 °C)</td>
-<td style="text-align: right;">1.56</td>
-<td style="text-align: right;">1.51</td>
+<td style="text-align: right;">1.55</td>
+<td style="text-align: right;">1.5</td>
 <td style="text-align: right;">1.6</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Rainy Season (vs. Winter)</td>
-<td style="text-align: right;">1.69</td>
-<td style="text-align: right;">1.16</td>
-<td style="text-align: right;">2.2</td>
+<td style="text-align: right;">1.72</td>
+<td style="text-align: right;">1.21</td>
+<td style="text-align: right;">2.23</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
@@ -516,17 +533,33 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone (ppb)</td>
+<td style="text-align: left;">Saturday Peak (vs. Monday)</td>
+<td style="text-align: right;">4.02</td>
+<td style="text-align: right;">3.07</td>
+<td style="text-align: right;">4.93</td>
+<td style="text-align: left;">Excludes Zero</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">School Commute Active (vs. Breaks/Weekends)</td>
-<td style="text-align: right;"><span style="color: firebrick;">-1.52</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-1.96</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-1.08</span></td>
+<td style="text-align: right;"><span style="color: firebrick;">-0.84</span></td>
+<td style="text-align: right;"><span style="color: firebrick;">-1.48</span></td>
+<td style="text-align: right;"><span style="color: firebrick;">-0.26</span></td>
+<td style="text-align: left;">Excludes Zero</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ozone (ppb)</td>
+<td style="text-align: left;">Sunday Reset (vs. Monday)</td>
+<td style="text-align: right;">2.66</td>
+<td style="text-align: right;">1.73</td>
+<td style="text-align: right;">3.59</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Wind Speed (+1 m/s)</td>
 <td style="text-align: right;"><span style="color: firebrick;">-11.82</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-12.17</span></td>
+<td style="text-align: right;"><span style="color: firebrick;">-12.18</span></td>
 <td style="text-align: right;"><span style="color: firebrick;">-11.48</span></td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
@@ -535,30 +568,30 @@ window.Quarto = {
 <td style="text-align: left;">Altitude (+100 m)</td>
 <td style="text-align: right;"><span style="color: firebrick;">-0.59</span></td>
 <td style="text-align: right;"><span style="color: firebrick;">-0.64</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.55</span></td>
+<td style="text-align: right;"><span style="color: firebrick;">-0.54</span></td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Data Imputation Used</td>
 <td style="text-align: right;">0.38</td>
-<td style="text-align: right;">0.21</td>
-<td style="text-align: right;">0.55</td>
+<td style="text-align: right;">0.2</td>
+<td style="text-align: right;">0.56</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Holiday Traffic (vs. Breaks/Weekends)</td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.1</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.68</span></td>
-<td style="text-align: right;">0.52</td>
-<td style="text-align: left;">Spans Zero</td>
+<td style="text-align: right;">1.64</td>
+<td style="text-align: right;">1.11</td>
+<td style="text-align: right;">2.19</td>
+<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Hot-Dry Spring (vs. Winter)</td>
-<td style="text-align: right;">2.25</td>
-<td style="text-align: right;">1.97</td>
+<td style="text-align: right;">2.26</td>
+<td style="text-align: right;">1.98</td>
 <td style="text-align: right;">2.54</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
@@ -573,9 +606,9 @@ window.Quarto = {
 <tr class="odd">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Rainy Season (vs. Winter)</td>
-<td style="text-align: right;"><span style="color: firebrick;">-5.17</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-5.37</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-4.98</span></td>
+<td style="text-align: right;"><span style="color: firebrick;">-5.12</span></td>
+<td style="text-align: right;"><span style="color: firebrick;">-5.32</span></td>
+<td style="text-align: right;"><span style="color: firebrick;">-4.92</span></td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
@@ -588,18 +621,34 @@ window.Quarto = {
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
+<td style="text-align: left;">Saturday Peak (vs. Monday)</td>
+<td style="text-align: right;">2.06</td>
+<td style="text-align: right;">1.69</td>
+<td style="text-align: right;">2.41</td>
+<td style="text-align: left;">Excludes Zero</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">School Commute Active (vs. Breaks/Weekends)</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.17</span></td>
-<td style="text-align: right;">0.18</td>
-<td style="text-align: left;">Spans Zero</td>
+<td style="text-align: right;">0.3</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.53</td>
+<td style="text-align: left;">Excludes Zero</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PM2.5 (µg/m³)</td>
+<td style="text-align: left;">Sunday Reset (vs. Monday)</td>
+<td style="text-align: right;">0.5</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">0.83</td>
+<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Wind Speed (+1 m/s)</td>
-<td style="text-align: right;"><span style="color: firebrick;">-3.66</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-3.8</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-3.52</span></td>
+<td style="text-align: right;"><span style="color: firebrick;">-3.69</span></td>
+<td style="text-align: right;"><span style="color: firebrick;">-3.83</span></td>
+<td style="text-align: right;"><span style="color: firebrick;">-3.54</span></td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 </tbody>
