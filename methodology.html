@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Technical Appendix: Hierarchical Bayesian Modeling of Mexico City’s Air Quality – Breathing in Mexico City</title>
+<title>Technical Appendix – Breathing in Mexico City</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -139,6 +139,7 @@ window.Quarto = {
 };
 </script>
 
+<link rel="stylesheet" href="styles.css">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -181,29 +182,19 @@ window.Quarto = {
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">On this page</h2>
    
-  <ul>
-  <li><a href="#introduction-scope" id="toc-introduction-scope" class="nav-link active" data-scroll-target="#introduction-scope">1. Introduction &amp; Scope</a></li>
-  <li><a href="#redefining-the-spatial-geography" id="toc-redefining-the-spatial-geography" class="nav-link" data-scroll-target="#redefining-the-spatial-geography">2. Redefining the Spatial Geography</a></li>
-  <li><a href="#data-engineering-imputation-cascade" id="toc-data-engineering-imputation-cascade" class="nav-link" data-scroll-target="#data-engineering-imputation-cascade">3. Data Engineering &amp; Imputation Cascade</a>
   <ul class="collapse">
-  <li><a href="#mapping-the-commute-the-temporal-architecture" id="toc-mapping-the-commute-the-temporal-architecture" class="nav-link" data-scroll-target="#mapping-the-commute-the-temporal-architecture">3.1 Mapping the Commute (The Temporal Architecture)</a></li>
-  <li><a href="#the-biological-reality-fix" id="toc-the-biological-reality-fix" class="nav-link" data-scroll-target="#the-biological-reality-fix">3.2 The Biological Reality Fix</a></li>
-  <li><a href="#the-imputation-cascade-the-missing-indicator-method" id="toc-the-imputation-cascade-the-missing-indicator-method" class="nav-link" data-scroll-target="#the-imputation-cascade-the-missing-indicator-method">3.3 The Imputation Cascade (The Missing-Indicator Method)</a></li>
-  <li><a href="#statistical-process-control-spc" id="toc-statistical-process-control-spc" class="nav-link" data-scroll-target="#statistical-process-control-spc">3.4 Statistical Process Control (SPC)</a></li>
-  <li><a href="#feature-standardization" id="toc-feature-standardization" class="nav-link" data-scroll-target="#feature-standardization">3.5 Feature Standardization</a></li>
-  </ul></li>
-  <li><a href="#bayesian-architecture" id="toc-bayesian-architecture" class="nav-link" data-scroll-target="#bayesian-architecture">4. Bayesian Architecture</a>
-  <ul class="collapse">
-  <li><a href="#the-day-of-week-confounder" id="toc-the-day-of-week-confounder" class="nav-link" data-scroll-target="#the-day-of-week-confounder">The Day-of-Week Confounder</a></li>
-  </ul></li>
-  <li><a href="#hamiltonian-monte-carlo-diagnostics" id="toc-hamiltonian-monte-carlo-diagnostics" class="nav-link" data-scroll-target="#hamiltonian-monte-carlo-diagnostics">5. Hamiltonian Monte Carlo Diagnostics</a>
-  <ul class="collapse">
-  <li><a href="#divergent-transitions-treedepth" id="toc-divergent-transitions-treedepth" class="nav-link" data-scroll-target="#divergent-transitions-treedepth">5.1 Divergent Transitions &amp; Treedepth</a></li>
-  <li><a href="#posterior-predictive-checks-ecdf" id="toc-posterior-predictive-checks-ecdf" class="nav-link" data-scroll-target="#posterior-predictive-checks-ecdf">5.2 Posterior Predictive Checks (ECDF)</a></li>
-  </ul></li>
-  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">6. Limitations</a></li>
-  <li><a href="#the-auditor-table" id="toc-the-auditor-table" class="nav-link" data-scroll-target="#the-auditor-table">7. The Auditor Table</a></li>
-  <li><a href="#computing-environment" id="toc-computing-environment" class="nav-link" data-scroll-target="#computing-environment">8. Computing Environment</a></li>
+  <li><a href="#what-data-and-what-exactly-was-measured" id="toc-what-data-and-what-exactly-was-measured" class="nav-link active" data-scroll-target="#what-data-and-what-exactly-was-measured">What data, and what exactly was measured?</a></li>
+  <li><a href="#can-the-raw-files-be-trusted-as-published" id="toc-can-the-raw-files-be-trusted-as-published" class="nav-link" data-scroll-target="#can-the-raw-files-be-trusted-as-published">Can the raw files be trusted as published?</a></li>
+  <li><a href="#weather-was-often-missing.-how-was-that-handled-and-does-it-bias-anything" id="toc-weather-was-often-missing.-how-was-that-handled-and-does-it-bias-anything" class="nav-link" data-scroll-target="#weather-was-often-missing.-how-was-that-handled-and-does-it-bias-anything">Weather was often missing. How was that handled, and does it bias anything?</a></li>
+  <li><a href="#how-were-school-days-holidays-and-fireworks-defined" id="toc-how-were-school-days-holidays-and-fireworks-defined" class="nav-link" data-scroll-target="#how-were-school-days-holidays-and-fireworks-defined">How were school days, holidays, and fireworks defined?</a></li>
+  <li><a href="#what-is-the-model-and-why-this-one" id="toc-what-is-the-model-and-why-this-one" class="nav-link" data-scroll-target="#what-is-the-model-and-why-this-one">What is the model, and why this one?</a></li>
+  <li><a href="#did-the-sampler-work" id="toc-did-the-sampler-work" class="nav-link" data-scroll-target="#did-the-sampler-work">Did the sampler work?</a></li>
+  <li><a href="#does-the-model-reproduce-the-data" id="toc-does-the-model-reproduce-the-data" class="nav-link" data-scroll-target="#does-the-model-reproduce-the-data">Does the model reproduce the data?</a></li>
+  <li><a href="#what-did-the-model-find" id="toc-what-did-the-model-find" class="nav-link" data-scroll-target="#what-did-the-model-find">What did the model find?</a></li>
+  <li><a href="#how-were-the-articles-health-and-timing-numbers-computed" id="toc-how-were-the-articles-health-and-timing-numbers-computed" class="nav-link" data-scroll-target="#how-were-the-articles-health-and-timing-numbers-computed">How were the article’s health and timing numbers computed?</a></li>
+  <li><a href="#what-this-analysis-cant-tell-you" id="toc-what-this-analysis-cant-tell-you" class="nav-link" data-scroll-target="#what-this-analysis-cant-tell-you">What this analysis can’t tell you</a></li>
+  <li><a href="#what-i-considered-and-left-out" id="toc-what-i-considered-and-left-out" class="nav-link" data-scroll-target="#what-i-considered-and-left-out">What I considered and left out</a></li>
+  <li><a href="#software-and-reproducibility" id="toc-software-and-reproducibility" class="nav-link" data-scroll-target="#software-and-reproducibility">Software and reproducibility</a></li>
   </ul>
 </nav>
     </div>
@@ -212,7 +203,8 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Technical Appendix: Hierarchical Bayesian Modeling of Mexico City’s Air Quality</h1>
+<h1 class="title">Technical Appendix</h1>
+<p class="subtitle lead">How the numbers in <em>Navigating the Nata</em> were made, and how far to trust them</p>
 </div>
 
 
@@ -229,56 +221,112 @@ window.Quarto = {
 </header>
 
 
-<section id="introduction-scope" class="level2">
-<h2 class="anchored" data-anchor-id="introduction-scope">1. Introduction &amp; Scope</h2>
-<p>This project is not an attempt to forecast tomorrow’s Air Quality Index or provide real-time spatial interpolation. The <em>Sistema de Monitoreo Atmosférico</em> (SIMAT) already operates a dense sensor infrastructure, and platforms like Google Maps are far better suited for real-time tracking across sparse geographical areas.</p>
-<p>Rather, I seek to understand the physical realities of the air we breathe in Mexico City. My goal is to provide actionable, structural insights for residents who want to know how everyday factors—like a hot afternoon, a cold weekend, or a windy morning—actually dictate the toxicity of their specific environment.</p>
-<p>To answer these questions using SIMAT’s public data, this analysis employs Generative Bayesian Modeling via Stan and <code>brms</code>. I chose this framework because Bayesian models are good at handling complex, interacting physical constraints transparently. By explicitly modeling the relationships between altitude, temperature, wind, and human commuting patterns, this analysis maps the basin’s macro-dynamics.</p>
-<hr>
-</section>
-<section id="redefining-the-spatial-geography" class="level2">
-<h2 class="anchored" data-anchor-id="redefining-the-spatial-geography">2. Redefining the Spatial Geography</h2>
-<p>The <em>Sistema de Monitoreo Atmosférico</em> (SIMAT) classifies its stations using <em>Zonas Climáticas Urbanas</em> (ZCU). However, ZCUs measure micro-meteorology. Specifically, surface roughness, building height, and localized heat islands within a 500-meter radius.</p>
-<p>While excellent for sensor calibration, these micro-climates are insufficient for modeling macro-atmospheric phenomena like the photochemical production of Ozone or the basin-wide flushing of PM2.5. I therefore abandoned the default political boundaries and micro-scales, re-mapping the 34 RAMA stations into five <strong>Urban Environments</strong>.</p>
-<p>To do this, I manually audited the metadata for each station using SIMAT’s <a href="http://www.aire.cdmx.gob.mx/descargas/publicaciones/simat-entornos.pdf">Caracterización del Entorno Físico report (2021)</a>. I extracted three specific physical constraints for each site: <em>Topografía del relieve</em> (Valley vs.&nbsp;Mountain), <em>Zona Climática Urbana</em> (ZCU 1-7), and <em>Densidad del tráfico</em> (Local Traffic Density). By synthesizing these physical realities, I grouped the stations into the following macro-regional basins:</p>
-<ol type="1">
-<li><strong>The Industrial Flatlands</strong> (<em>Plancha Industrial</em>): The heavily paved, factory-dense north. Stations like Xalostoc (XAL) and Tlalnepantla (TLA), characterized by their location on the flat basin floor, high diesel traffic, and proximity to industrial corridors.</li>
-<li><strong>The Urban Core</strong> (<em>Núcleo Urbano</em>): The high-density commercial/residential center. Stations like Merced (MER) and Benito Juárez (BJU), featuring ZCU 2 and 3 classifications (high-density concrete) and unyielding traffic.</li>
-<li><strong>The Highland Periphery</strong> (<em>Periferia Verde</em>): The semi-rural, vegetated mountain slopes. Stations like Ajusco Medio (AJM) and Cuajimalpa (CUA), characterized by <em>Montaña</em> topography, ZCU 6/7, and high vegetative cover.</li>
-<li><strong>The Eastern Sprawl</strong> (<em>Expansión Oriental</em>): The mixed-density residential expansion, such as FES Aragón (FAR) and Chalco (CHO), located on the dry, sprawling plains of the eastern basin with distinct wind fetches.</li>
-<li><strong>The Photochemical Basin</strong> (<em>Trampa Fotoquímica</em>): Topographic bottlenecks in the south/southwest, like Pedregal (PED), where prevailing northern winds are thought to deposit chemical precursors against the mountains.</li>
-</ol>
-<hr>
-</section>
-<section id="data-engineering-imputation-cascade" class="level2">
-<h2 class="anchored" data-anchor-id="data-engineering-imputation-cascade">3. Data Engineering &amp; Imputation Cascade</h2>
-<p>I extracted 5 years of hourly data (2021-2025) from two primary networks. Pollutant concentrations were pulled from the <a href="http://www.aire.cdmx.gob.mx/default.php?opc=%27aKBhnmI=%27&amp;opcion=Zg==">Red Automática de Monitoreo Atmosférico (RAMA)</a>, while meteorological parameters were sourced directly from the <a href="http://www.aire.cdmx.gob.mx/default.php?opc=%27aKBi%27">Red de Meteorología y Radiación Solar (REDMET)</a>.</p>
-<section id="mapping-the-commute-the-temporal-architecture" class="level3">
-<h3 class="anchored" data-anchor-id="mapping-the-commute-the-temporal-architecture">3.1 Mapping the Commute (The Temporal Architecture)</h3>
-<p>To evaluate the observational contrast of commuter traffic, I scraped the historical school calendars from the <a href="https://www.planeacion.sep.gob.mx/CalendarioHistorico.aspx">Secretaría de Educación Pública (SEP)</a>. However, simply flagging days as “school” or “not school” contaminates the underlying economic reality of the city. To preserve the statistical integrity of the traffic pulses, the calendar was parsed into strict, mutually exclusive hierarchical categories:</p>
+<p><em>By <a href="https://www.linkedin.com/in/hector-ruiz-g/">Hector Ruiz</a></em></p>
+<p>This appendix explains how the numbers in <a href="./index.html">the article</a> were produced, in roughly the order a skeptical reader would ask about them. It is not a replication package, but the code that matters is shown in folded blocks.</p>
+<p>The analysis is observational. The model describes how pollution moves with weather, calendar, and place; it does not establish causes or estimate health effects. Every health figure in the article comes from published research, applied to these data as described in <a href="#how-were-the-articles-health-and-timing-numbers-computed">the section on health numbers</a>.</p>
+<section id="what-data-and-what-exactly-was-measured" class="level2">
+<h2 class="anchored" data-anchor-id="what-data-and-what-exactly-was-measured">What data, and what exactly was measured?</h2>
+<p>All monitoring data are hourly, from January 2021 to December 2025, from Mexico City’s air quality monitoring system (SIMAT):</p>
 <ul>
-<li><strong>Macroeconomic Shutdowns (<code>is_holiday</code>):</strong> Comprises Federal Statutory Holidays (<em>Ley Federal del Trabajo</em>) alongside customary city-wide shutdowns (e.g., Holy Thursday, Good Friday, and Day of the Dead). These represent total commercial, government, and educational shutdowns where basin-wide traffic collapses.</li>
-<li><strong>The School Run (<code>is_school_day</code>):</strong> Represents days where both standard adult commuters and the massive student drop-off rush are active.</li>
-<li><strong>The Reference Baseline:</strong> Days where adult professionals commute, but students remain home (e.g., Summer Breaks, monthly <em>Consejo Técnico Escolar</em> Fridays, and SEP-exclusive suspensions like <em>Día del Maestro</em>). Because the natural weekend rhythm is explicitly controlled for via a day-of-the-week variable, these “student-absent weekdays” form the pure underlying traffic baseline against which the school run is measured.</li>
+<li><strong>Pollutants:</strong> ozone (O₃) and fine particles (PM2.5) from the <a href="http://www.aire.cdmx.gob.mx/default.php?opc=%27aKBhnmI=%27&amp;opcion=Zg==" title="SIMAT. Red Automática de Monitoreo Atmosférico (RAMA): hourly pollutant data.">Red Automática de Monitoreo Atmosférico (RAMA)</a>. Its other gases (NO, NO₂, NOx, CO, PM10) were used only for descriptive checks.</li>
+<li><strong>Weather:</strong> temperature, relative humidity, and wind from the <a href="http://www.aire.cdmx.gob.mx/default.php?opc=%27aKBi%27" title="SIMAT. Red de Meteorología y Radiación Solar (REDMET): hourly weather and radiation data.">Red de Meteorología y Radiación Solar (REDMET)</a>, plus hourly UV-A sunlight at 11 stations.</li>
+<li><strong>Calendar:</strong> the school calendars of the <a href="https://www.planeacion.sep.gob.mx/CalendarioHistorico.aspx" title="Secretaría de Educación Pública. Calendarios escolares históricos.">Secretaría de Educación Pública</a> and federal holidays.</li>
+<li><strong>Stations:</strong> altitude and land cover from SIMAT’s <a href="http://www.aire.cdmx.gob.mx/descargas/publicaciones/simat-entornos.pdf" title="SIMAT (2021). Caracterización del entorno físico de las estaciones de monitoreo."><em>Caracterización del Entorno Físico</em></a>, which I also used to group stations into five urban environments.</li>
 </ul>
+<p>The unit of analysis is the <strong>station-day</strong>, with daily metrics as in the official daily report of <a href="https://sinaica.inecc.gob.mx/archivo/noms/NOM-172-SEMARNAT-2023-Indice-AIRE-y-SALUD.pdf" title="NOM-172-SEMARNAT-2023. Lineamientos para la obtención y comunicación del índice de calidad del aire y riesgos a la salud. Diario Oficial de la Federación.">NOM-172-SEMARNAT-2023</a>: the day’s highest one-hour value for ozone, and the 24-hour mean for PM2.5. A day counts only if at least 18 of its 24 hours are valid (<a href="https://aire.cdmx.gob.mx/descargas/Opendata/catalogos/calculo-promedio-24-horas.pdf" title="SIMAT. Cálculo del promedio de 24 horas (criterio de suficiencia del 75%).">SIMAT’s 75% rule</a>).</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">PM2.5 (24-hour mean, µg/m³)</th>
+<th style="text-align: right;">Ozone (daily 1-hour peak, ppb)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Station-days</td>
+<td style="text-align: right;">23,185</td>
+<td style="text-align: right;">46,910</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Stations</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">34</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median</td>
+<td style="text-align: right;">18.8</td>
+<td style="text-align: right;">75</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">95th percentile</td>
+<td style="text-align: right;">34.2</td>
+<td style="text-align: right;">120</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Maximum</td>
+<td style="text-align: right;">115.1</td>
+<td style="text-align: right;">187</td>
+</tr>
+</tbody>
+</table>
+<p>The industrial north has eight ozone stations but only one PM2.5 station, so anything said about particles there rests on a single site.</p>
 </section>
-<section id="the-biological-reality-fix" class="level3">
-<h3 class="anchored" data-anchor-id="the-biological-reality-fix">3.2 The Biological Reality Fix</h3>
-<p>Human lungs react differently to different pollutants. During the Exploratory Data Analysis phase, the temporal distributions of the two pollutants dictated entirely different aggregation strategies:</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="plots/02_eda.png" class="img-fluid figure-img"></p>
-<figcaption>Exploratory Data Analysis at the Benito Juárez station: Diurnal profiles (right) reveal why Ozone requires peak-based modeling, while PM2.5 requires 24-hour cumulative means.</figcaption>
-</figure>
+<section id="can-the-raw-files-be-trusted-as-published" class="level2">
+<h2 class="anchored" data-anchor-id="can-the-raw-files-be-trusted-as-published">Can the raw files be trusted as published?</h2>
+<p>Mostly, after three corrections. None of them is documented by SIMAT; each was inferred from the data.</p>
+<p><strong>Hour labels.</strong> SIMAT labels each hourly average by the <em>end</em> of its hour; everything here is converted to start-of-hour labels. The 2025 pollutant file appears to label the <em>start</em> instead: its ozone daily cycle peaks and bottoms out exactly one hour earlier than in 2023 and 2024, so it was treated as start-labeled.</p>
+<p><strong>“Stuck at 1” weather readings.</strong> Some sensors report exactly 1 (1 °C, 1%, 1 m/s) for days or months, often in all variables at once; one central station sat at 1 °C for more than 5,000 hours. The value 1 seems to work as an undocumented “no data” code. A real reading can be 1 now and then, but not three hours in a row, so runs of three or more were set to missing. That removed about 4-6% of the weather readings, almost none of them in 2023, which suggests the pattern comes from how each year’s file was produced.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 01_tidy.R: remove runs of 3+ consecutive hours at exactly 1 (per station)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>clean_met <span class="ot">=</span> clean_met <span class="sc">%&gt;%</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(id_station, date_day, hour) <span class="sc">%&gt;%</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id_station) <span class="sc">%&gt;%</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">run_id =</span> <span class="fu">consecutive_id</span>(value)) <span class="sc">%&gt;%</span>   <span class="co"># same id for neighboring equal values</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id_station, run_id) <span class="sc">%&gt;%</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">value =</span> <span class="fu">if_else</span>(value <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> <span class="fu">n</span>() <span class="sc">&gt;=</span> <span class="dv">3</span>, <span class="cn">NA_real_</span>, value)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 </div>
-<ul>
-<li><strong>PM2.5</strong> builds up as a cumulative smog. Unlike Ozone, its baseline remains elevated throughout the night, making the <strong>24-hour arithmetic mean</strong> the most biologically relevant metric. I adhered strictly to <a href="https://aire.cdmx.gob.mx/descargas/Opendata/catalogos/calculo-promedio-24-horas.pdf">SIMAT’s 75% rule</a>, requiring at least 18 valid hourly readings per day to calculate a valid mean.</li>
-<li><strong>Ozone</strong> follows a severe diurnal photolytic cycle (visible in the far-right plot), dropping to its lowest in the early morning (about 5 ppb at its minimum) and rising sharply in the afternoon. Averaging Ozone over 24 hours destroys the signal; therefore, I extracted the <strong>daily maximum peak</strong>, as Ozone operates on an acute threshold-toxicity basis.</li>
-</ul>
+<p><strong>UV-A.</strong> Where SIMAT publishes a year twice, the copy without stuck values was used. No station reported UV-A from June 1 to July 6, 2024; those 36 days take the same-date average of the other years and are flagged.</p>
 </section>
-<section id="the-imputation-cascade-the-missing-indicator-method" class="level3">
-<h3 class="anchored" data-anchor-id="the-imputation-cascade-the-missing-indicator-method">3.3 The Imputation Cascade (The Missing-Indicator Method)</h3>
-<p>Prior to imputation, meteorological telemetry was missing for a significant portion of our valid pollutant days. The <code>is_imputed_met</code> flag marks the rows rescued by this process. This is a day-level flag that triggers <code>TRUE</code> when any single hour that day lacked a raw temperature, wind, or RH reading.</p>
+<section id="weather-was-often-missing.-how-was-that-handled-and-does-it-bias-anything" class="level2">
+<h2 class="anchored" data-anchor-id="weather-was-often-missing.-how-was-that-handled-and-does-it-bias-anything">Weather was often missing. How was that handled, and does it bias anything?</h2>
+<p>Weather gaps are the biggest data problem here. Most are dead station-years rather than scattered hours, and eight ozone stations have no weather sensor at all. Still, between 14 and 33 stations reported weather every single day.</p>
+<p>Gaps of up to three hours are interpolated; longer gaps take the same-hour average of the other stations in the same urban environment, or failing that, of the whole city. Station-days with any borrowed hour (46% for PM2.5, 58% for ozone) are flagged, and the flag enters the model; its estimated effect is small.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 02_build_daily_model_data.R</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: short gaps (&lt;= 3 hours) by straight-line interpolation</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(id_station, id_parameter, datetime) <span class="sc">%&gt;%</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id_station, id_parameter) <span class="sc">%&gt;%</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(TMP, WSP, RH), <span class="sc">~</span> zoo<span class="sc">::</span><span class="fu">na.approx</span>(.x, <span class="at">maxgap =</span> <span class="dv">3</span>, <span class="at">na.rm =</span> <span class="cn">FALSE</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Steps 2 and 3: same-hour average of the station's urban environment, then the city</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>station_weather <span class="ot">=</span> data <span class="sc">%&gt;%</span> <span class="fu">distinct</span>(date_day, hour, id_station, archetype, TMP, WSP, RH)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>arch_hourly <span class="ot">=</span> station_weather <span class="sc">%&gt;%</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(date_day, hour, archetype) <span class="sc">%&gt;%</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">z_TMP =</span> <span class="fu">mean</span>(TMP, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">z_WSP =</span> <span class="fu">mean</span>(WSP, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">z_RH =</span> <span class="fu">mean</span>(RH, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>city_hourly <span class="ot">=</span> station_weather <span class="sc">%&gt;%</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(date_day, hour) <span class="sc">%&gt;%</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">c_TMP =</span> <span class="fu">mean</span>(TMP, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">c_WSP =</span> <span class="fu">mean</span>(WSP, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">c_RH =</span> <span class="fu">mean</span>(RH, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(arch_hourly, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"date_day"</span>, <span class="st">"hour"</span>, <span class="st">"archetype"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(city_hourly, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"date_day"</span>, <span class="st">"hour"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">TMP =</span> <span class="fu">coalesce</span>(TMP, z_TMP, c_TMP),</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">WSP =</span> <span class="fu">coalesce</span>(WSP, z_WSP, c_WSP),</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>         <span class="at">RH  =</span> <span class="fu">coalesce</span>(RH,  z_RH,  c_RH))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>To test the borrowed values, a leave-one-out check hides each station’s own weather, fills it the same way from the other stations, and compares the filled day with the real one:</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 20%">
@@ -289,388 +337,769 @@ window.Quarto = {
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Season</th>
-<th style="text-align: left;">PM2.5 (Valid)</th>
-<th style="text-align: left;">PM2.5 (Rescued)</th>
-<th style="text-align: left;">Ozone (Valid)</th>
-<th style="text-align: left;">Ozone (Rescued)</th>
+<th style="text-align: left;">Daily value</th>
+<th style="text-align: right;">Station-days</th>
+<th style="text-align: right;">Bias (borrowed - real)</th>
+<th style="text-align: right;">Mean absolute error</th>
+<th style="text-align: right;">Correlation</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><strong>Seca-Fria</strong></td>
-<td style="text-align: left;">4,865</td>
-<td style="text-align: left;">3,206</td>
-<td style="text-align: left;">7,803</td>
-<td style="text-align: left;">7,625</td>
+<td style="text-align: left;">Maximum temperature</td>
+<td style="text-align: right;">31,093</td>
+<td style="text-align: right;">-0.11 °C</td>
+<td style="text-align: right;">1.69 °C</td>
+<td style="text-align: right;">0.77</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;"><strong>Seca-Calida</strong></td>
-<td style="text-align: left;">3,674</td>
-<td style="text-align: left;">2,403</td>
-<td style="text-align: left;">5,947</td>
-<td style="text-align: left;">6,344</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><strong>Lluvias</strong></td>
-<td style="text-align: left;">5,259</td>
-<td style="text-align: left;">3,686</td>
-<td style="text-align: left;">9,001</td>
-<td style="text-align: left;">10,156</td>
+<td style="text-align: left;">Mean wind speed</td>
+<td style="text-align: right;">34,488</td>
+<td style="text-align: right;">0.00 m/s</td>
+<td style="text-align: right;">0.45 m/s</td>
+<td style="text-align: right;">0.55</td>
 </tr>
 </tbody>
 </table>
-<p>Dropping these rows (a “complete-case analysis”) can bias the results if the units with missing values differ systematically from the completely observed cases.</p>
-<p>Rather than discarding roughly 40% of the PM2.5 station-days and 50% of the Ozone station-days, I applied an adaptation of the Missing-Indicator Method. I replaced the missing values with same-hour values from stations in the same environment, and added an explicit boolean flag (<code>is_imputed_met</code>) to the Bayesian model.</p>
-<ol type="1">
-<li><strong>Temporal Bridge:</strong> Missing gaps of 1-3 hours were interpolated locally.</li>
-<li><strong>Environment Average:</strong> If a sensor failed for a full day, I borrowed the mean temperature, wind, and humidity from the other sensors within the same Urban Environment.</li>
-<li><strong>City Average:</strong> As a last resort, I used the basin-wide average.</li>
-</ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Level 1: Temporal Bridge (1-3 hours local interpolation)</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(id_station, id_parameter, datetime) <span class="sc">%&gt;%</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id_station, id_parameter) <span class="sc">%&gt;%</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(TMP, WSP, RH), <span class="sc">~</span> zoo<span class="sc">::</span><span class="fu">na.approx</span>(.x, <span class="at">maxgap =</span> <span class="dv">3</span>, <span class="at">na.rm =</span> <span class="cn">FALSE</span>))) <span class="sc">%&gt;%</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Level 2 &amp; 3: Environment Average and City Average</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>arch_hourly <span class="ot">=</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(date_day, hour, archetype) <span class="sc">%&gt;%</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">z_TMP =</span> <span class="fu">mean</span>(TMP, <span class="at">na.rm=</span><span class="cn">TRUE</span>), <span class="at">z_WSP =</span> <span class="fu">mean</span>(WSP, <span class="at">na.rm=</span><span class="cn">TRUE</span>), <span class="at">z_RH =</span> <span class="fu">mean</span>(RH, <span class="at">na.rm=</span><span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>city_hourly <span class="ot">=</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(date_day, hour) <span class="sc">%&gt;%</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">c_TMP =</span> <span class="fu">mean</span>(TMP, <span class="at">na.rm=</span><span class="cn">TRUE</span>), <span class="at">c_WSP =</span> <span class="fu">mean</span>(WSP, <span class="at">na.rm=</span><span class="cn">TRUE</span>), <span class="at">c_RH =</span> <span class="fu">mean</span>(RH, <span class="at">na.rm=</span><span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Cascade the Fills</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(arch_hourly, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"date_day"</span>, <span class="st">"hour"</span>, <span class="st">"archetype"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(city_hourly, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"date_day"</span>, <span class="st">"hour"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">TMP =</span> <span class="fu">coalesce</span>(TMP, z_TMP, c_TMP),</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">WSP =</span> <span class="fu">coalesce</span>(WSP, z_WSP, c_WSP),</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">RH  =</span> <span class="fu">coalesce</span>(RH, z_RH, c_RH)</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The indicator flag absorbs average differences on borrowed days, but a single deterministic fill doesn’t propagate imputation uncertainty, so temperature and wind slopes are probably somewhat attenuated and their intervals optimistic.</p>
-</section>
-<section id="statistical-process-control-spc" class="level3">
-<h3 class="anchored" data-anchor-id="statistical-process-control-spc">3.4 Statistical Process Control (SPC)</h3>
-<p>Air quality monitors occasionally transmit physically impossible telemetry. To prevent sensor malfunction spikes from skewing the hierarchical slopes, I passed the data through a Statistical Process Control (SPC) filter. To prevent extreme outliers from stretching the control limits, I utilized a robust control chart methodology based on the Interquartile Range, as demonstrated by <span title="Rocke, D. M. (1989). Robust control charts. Technometrics, 31(2), 173-184." style="border-bottom: 1px dotted #888; cursor: help;">David Rocke (1989)</span>.</p>
-<p>The filter works per station × pollutant × hour on a rolling window of the current plus up to 29 previous valid days. It flags values outside <span class="math inline">\(Q1 - 1.5 \cdot IQR\)</span> and <span class="math inline">\(Q3 + 1.5 \cdot IQR\)</span>.</p>
-<p>Flagged hours are removed before daily aggregation, which also removes their concurrent weather from the daily maximum calculations. While this effectively removes glitches, it can also trim real short peaks, and the ozone posterior predictive check’s lighter observed upper tail is consistent with that truncation. The filter flagged 17,462 hours (3.2% of hours entering the filter) for PM2.5 and 40,028 hours (3.6%) for Ozone.</p>
-</section>
-<section id="feature-standardization" class="level3">
-<h3 class="anchored" data-anchor-id="feature-standardization">3.5 Feature Standardization</h3>
-<p>To facilitate Hamiltonian Monte Carlo convergence, all continuous physical predictors were standardized into Z-scores (<span class="math inline">\(z = \frac{x - \mu}{\sigma}\)</span>). Temperature was defined as the daily maximum (max of hourly values), while wind and relative humidity were defined as daily means. Z-scores were computed separately within each pollutant’s dataset.</p>
-<p>The final marginal effects reported in the auditor table are back-transformed into their natural physical units. The transformations use each pollutant’s own mean and standard deviation. Specifically, the estimates are the average change from a +1 SD shift divided by the SD, which gives approximate average slopes per unit.</p>
-<hr>
-</section>
-</section>
-<section id="bayesian-architecture" class="level2">
-<h2 class="anchored" data-anchor-id="bayesian-architecture">4. Bayesian Architecture</h2>
-<p>Pollutant concentrations are strictly positive and possess long right tails. I therefore modeled the data using a log-normal data-generating process:</p>
-<p><span class="math display">\[Y_i \sim \text{LogNormal}(\mu_i, \sigma)\]</span> <span class="math display">\[\mu_i = \alpha_{j[i]} + \mathbf{X}_i \boldsymbol{\beta} + \mathbf{Z}_i \boldsymbol{\gamma}_{j[i]}\]</span></p>
-<p>Where <span class="math inline">\(\alpha_{j[i]}\)</span> represents the varying baseline intercept for each of the 5 Urban Environments, <span class="math inline">\(\mathbf{X}_i \boldsymbol{\beta}\)</span> contains the fixed population-level effects, and <span class="math inline">\(\mathbf{Z}_i \boldsymbol{\gamma}_{j[i]}\)</span> represents the hierarchically varying slopes for temperature and wind across the different environments.</p>
-<section id="the-day-of-week-confounder" class="level3">
-<h3 class="anchored" data-anchor-id="the-day-of-week-confounder">The Day-of-Week Confounder</h3>
-<p>Exploratory variance diagnostics revealed that the day of the week dictates a massive baseline shift in urban pollution, with atmospheric load building cumulatively from Monday and peaking violently on Saturday before resetting on Sunday. To prevent this cycle from confounding the traffic indicators, <code>day_of_week_f</code> was injected as a foundational categorical baseline.</p>
-<p>I built the models progressively—from a base varying-intercept model, to a linear varying-slope model, to the final interaction model—to explicitly test the following:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 02b_explore_daily_data.R: leave-one-out check of borrowed weather</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Leave-one-out average = (sum of everyone - my own value) / (count - 1)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>loo <span class="ot">=</span> met <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(date_day, hour, id_parameter, archetype) <span class="sc">%&gt;%</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n_arch =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(value)), <span class="at">sum_arch =</span> <span class="fu">sum</span>(value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(date_day, hour, id_parameter) <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">n_city =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(value)), <span class="at">sum_city =</span> <span class="fu">sum</span>(value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">own =</span> <span class="sc">!</span><span class="fu">is.na</span>(value),</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">own_value =</span> <span class="fu">if_else</span>(own, value, <span class="dv">0</span>),</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">arch_loo =</span> (sum_arch <span class="sc">-</span> own_value) <span class="sc">/</span> (n_arch <span class="sc">-</span> own),   <span class="co"># NaN/Inf when nobody else reported</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">city_loo =</span> (sum_city <span class="sc">-</span> own_value) <span class="sc">/</span> (n_city <span class="sc">-</span> own),</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">borrowed =</span> <span class="fu">if_else</span>(<span class="fu">is.finite</span>(arch_loo), arch_loo, city_loo)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># then: daily max (temperature) or daily mean (wind) of real vs borrowed hours,</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># on station-days with at least 18 real and 18 borrowed hours</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Borrowed weather is unbiased on average but imprecise for any one station. That is why the model splits each weather variable in two:</p>
 <ul>
-<li><strong>Ozone (The Heat Catalyst):</strong> <span class="math inline">\(\beta (\text{School\_Day}_i \times \text{Temp}_i)\)</span>. This tests whether the suppressive titration effect of the school-day commute reverses into photochemical generation under extreme heat.</li>
-<li><strong>PM2.5 (The Wind Scrubber):</strong> <span class="math inline">\(\beta (\text{Season}_i \times \text{Wind}_i)\)</span>. This tests whether the flushing effect of the wind breaks down during the hot, dry spring.</li>
+<li><strong>City-wide weather</strong>, the average over all stations that day. It rests on 14 to 33 stations, so it is robust to any one station’s gaps, and it is what a forecast tells you.</li>
+<li><strong>Local deviation</strong>, the station’s value minus the city average. Borrowed values pull it toward zero.</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Decoupled Priors for Lognormal Baselines</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>pm25_priors <span class="ot">=</span> <span class="fu">c</span>(</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">3.1</span>, <span class="fl">0.2</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>), <span class="co"># Calibrated for 24h Mean</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.1</span>),   <span class="at">class =</span> <span class="st">"b"</span>),</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="dv">5</span>),   <span class="at">class =</span> <span class="st">"sd"</span>),</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.2</span>),   <span class="at">class =</span> <span class="st">"sigma"</span>, <span class="at">lb =</span> <span class="dv">0</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>o3_priors <span class="ot">=</span> <span class="fu">c</span>(</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">4.3</span>, <span class="fl">0.3</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>), <span class="co"># Calibrated for Peak</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.1</span>),   <span class="at">class =</span> <span class="st">"b"</span>),</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="dv">5</span>),   <span class="at">class =</span> <span class="st">"sd"</span>),</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.2</span>),   <span class="at">class =</span> <span class="st">"sigma"</span>, <span class="at">lb =</span> <span class="dv">0</span>)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Terminal Interaction Model (Ozone)</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>m_o3_interaction <span class="ot">=</span> <span class="fu">brm</span>(</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> daily_metric <span class="sc">~</span> season <span class="sc">+</span> day_of_week_f <span class="sc">+</span> is_school_day <span class="sc">*</span> z_temp <span class="sc">+</span> is_holiday <span class="sc">+</span> is_imputed_met <span class="sc">+</span> </span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    z_alt <span class="sc">+</span> z_wind <span class="sc">+</span> z_rh <span class="sc">+</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span> <span class="sc">+</span> z_temp <span class="sc">+</span> z_wind <span class="sc">|</span> archetype),</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> o3_data,</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">lognormal</span>(), </span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior =</span> o3_priors, </span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>,</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">warmup =</span> <span class="dv">1000</span>, <span class="at">seed =</span> <span class="dv">123</span>,</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">list</span>(<span class="at">adapt_delta =</span> <span class="fl">0.99</span>), </span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">backend =</span> <span class="st">'cmdstanr'</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Terminal Interaction Model (PM2.5)</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>m_pm25_interaction <span class="ot">=</span> <span class="fu">brm</span>(</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> daily_metric <span class="sc">~</span> season <span class="sc">*</span> z_wind <span class="sc">+</span> day_of_week_f <span class="sc">+</span> is_school_day <span class="sc">+</span> is_holiday <span class="sc">+</span> is_imputed_met <span class="sc">+</span> </span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    z_alt <span class="sc">+</span> z_temp <span class="sc">+</span> z_rh <span class="sc">+</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span> <span class="sc">+</span> z_temp <span class="sc">+</span> z_wind <span class="sc">|</span> archetype),</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> pm25_data,</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">lognormal</span>(), </span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior =</span> pm25_priors, </span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>,</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">warmup =</span> <span class="dv">1000</span>, <span class="at">seed =</span> <span class="dv">123</span>,</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">list</span>(<span class="at">adapt_delta =</span> <span class="fl">0.99</span>), </span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">backend =</span> <span class="st">'cmdstanr'</span></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<hr>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 02_build_daily_model_data.R: city-wide and local parts of each weather variable</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>city_weather <span class="ot">=</span> daily_metrics <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(date_day, id_station, daily_max_temp, daily_mean_wind, daily_mean_rh) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(date_day) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">city_max_temp  =</span> <span class="fu">mean</span>(daily_max_temp,  <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">city_mean_wind =</span> <span class="fu">mean</span>(daily_mean_wind, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">city_mean_rh   =</span> <span class="fu">mean</span>(daily_mean_rh,   <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>daily_metrics <span class="ot">=</span> daily_metrics <span class="sc">%&gt;%</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(city_weather, <span class="at">by =</span> <span class="st">"date_day"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">dev_temp =</span> daily_max_temp  <span class="sc">-</span> city_max_temp,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">dev_wind =</span> daily_mean_wind <span class="sc">-</span> city_mean_wind,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">dev_rh   =</span> daily_mean_rh   <span class="sc">-</span> city_mean_rh)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>The split also matters for the model: its baseline per date (below) would otherwise absorb anything the whole city shares that day, including the weather. The upshot is that <strong>the city-wide weather effects are well identified, and the local ones are noisier and probably understated.</strong> UV-A enters only as a city-wide term, since 11 stations are too few for a local one.</p>
 </section>
+<section id="how-were-school-days-holidays-and-fireworks-defined" class="level2">
+<h2 class="anchored" data-anchor-id="how-were-school-days-holidays-and-fireworks-defined">How were school days, holidays, and fireworks defined?</h2>
+<p>Each date is labeled from the SEP calendars and federal holidays. Because day of the week is in the model, the school-day effect compares school days with <strong>weekdays without school</strong>. January to August 2021, when the calendar said school but classes were online, gets its own flag. December 25 and January 1 are split from the other holidays as <strong>fireworks days</strong>: the Christmas Eve and New Year’s Eve fireworks go off around midnight, so their smoke lands on those dates.</p>
 </section>
-<section id="hamiltonian-monte-carlo-diagnostics" class="level2">
-<h2 class="anchored" data-anchor-id="hamiltonian-monte-carlo-diagnostics">5. Hamiltonian Monte Carlo Diagnostics</h2>
-<p>The terminal models compiled cleanly, running 4 chains of 2,000 iterations. The diagnostic parameters confirm reliable Markov chain Monte Carlo estimation. For both models, every parameter achieved an <span class="math inline">\(\hat{R} \le 1.01\)</span> convergence metric. The Effective Sample Sizes comfortably exceeded the 400-draw threshold required for stable posterior inference, with the <code>Bulk_ESS</code> ranging from 1,096 to over 8,100 across parameters. The BFMI (Bayesian Fraction of Missing Information) energy diagnostics confirmed efficient exploration of the parameter space, with values ranging from 0.82 to 1.00 across all chains.</p>
-<section id="divergent-transitions-treedepth" class="level3">
-<h3 class="anchored" data-anchor-id="divergent-transitions-treedepth">5.1 Divergent Transitions &amp; Treedepth</h3>
-<p>During the sampling of the PM2.5 interaction model, the backend reported a single divergent transition (0.0%) and hit the maximum treedepth limit on 8% of transitions. The Ozone model sampled with zero divergences but hit the maximum treedepth limit on 38% of its transitions.</p>
-<p>Because the models must estimate a complex covariance matrix for the random slopes across only 5 archetypes, the NUTS sampler was forced to take very small steps (<code>adapt_delta = 0.99</code>). Hitting the treedepth limit under these conditions indicates computational inefficiency, not geometric bias. The <span class="math inline">\(\hat{R} \le 1.01\)</span> values and high ESS metrics confirm that the sampler successfully extracted valid inferences despite the sluggish traversal.</p>
-<p>As noted by <span title="Betancourt, M. (2018). A conceptual introduction to Hamiltonian Monte Carlo. arXiv preprint arXiv:1701.02434." style="border-bottom: 1px dotted #888; cursor: help;">Michael Betancourt (2018)</span>, a confluence of pathologies “is advantageous in practice because we can use the easily-observed divergences to identify the more subtle statistical pathologies.” To determine whether the single PM2.5 divergence represented a trapped sampler, I mapped the energy distributions and hierarchical funnels:</p>
-<p><img src="plots/04_divergence_energy_pm25.png" class="img-fluid" alt="PM2.5 Energy Diagnostic (BFMI)"> <img src="plots/04_divergence_funnel_pm25.png" class="img-fluid" alt="PM2.5 Hierarchical Funnel Checks"></p>
-<p>Looking at the funnel checks, the single PM2.5 divergence sits comfortably inside the main probability mass of both parameters, rather than in the sparse tails or at the pathological funnel necks (<span class="math inline">\(sd \approx 0\)</span>). In the wind-slope plot, it is located near <span class="math inline">\(b\_z\_wind \approx -0.05\)</span> and <span class="math inline">\(sd \approx 0.15\)</span>, while in the intercept plot, it rests near the upper edge of the dense cloud at <span class="math inline">\(sd \approx 0.19\)</span>. Because this only happened once within a completely normal range of values, it represents a minor calculation glitch caused by the sampler taking extremely small steps (<code>adapt_delta = 0.99</code>), rather than a fundamental flaw in the model.</p>
-</section>
-<section id="posterior-predictive-checks-ecdf" class="level3">
-<h3 class="anchored" data-anchor-id="posterior-predictive-checks-ecdf">5.2 Posterior Predictive Checks (ECDF)</h3>
-<p>Because pollutant concentrations are strictly positive and right-skewed, I approximated the underlying data-generating process using a Log-Normal family. I utilized Empirical Cumulative Distribution Function (ECDF) overlays for the posterior predictive checks to avoid density smoothing artifacts.</p>
-<p><img src="plots/03b_posterior_check_pm25_ecdf.png" class="img-fluid" alt="Posterior Predictive Check: PM2.5"> <img src="plots/03b_posterior_check_o3_ecdf.png" class="img-fluid" alt="Posterior Predictive Check: Ozone"></p>
-<p>The ECDF confirms PM2.5 fits closely, with a slightly heavier predicted upper tail. Ozone captures the overall shape but sits about 4–5 ppb low around the median and predicts a heavier upper tail than observed, so absolute ppb values are approximate.</p>
-<hr>
-</section>
-</section>
-<section id="limitations" class="level2">
-<h2 class="anchored" data-anchor-id="limitations">6. Limitations</h2>
+<section id="what-is-the-model-and-why-this-one" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-the-model-and-why-this-one">What is the model, and why this one?</h2>
+<p>Both pollutants get the same kind of model, fitted separately with <a href="https://paulbuerkner.com/brms/" title="Bürkner, P.-C. (2017). brms: An R package for Bayesian multilevel models using Stan. Journal of Statistical Software, 80(1).">brms</a> and Stan. Concentrations are positive and right-skewed, so each daily value is lognormal, and coefficients are multiplicative (0.1 ≈ 10% higher):</p>
+<p><span class="math display">\[
+\log y_{sd} \sim \text{Normal}(\mu_{sd}, \sigma), \qquad
+\mu_{sd} = \mathbf{x}_{sd}^{\top}\boldsymbol\beta + u_s + w_{\text{week}(d)} + v_d
+\]</span></p>
+<p><span class="math display">\[
+u_s \sim \text{Normal}(0, \tau_{\text{station}}), \quad
+w_k \sim \text{Normal}(0, \tau_{\text{week}}), \quad
+v_d \sim \text{Normal}(0, \tau_{\text{date}})
+\]</span></p>
+<p>where <span class="math inline">\(s\)</span> is the station and <span class="math inline">\(d\)</span> the date. The fixed part holds city-wide and local weather, midday UV-A, season, day of the week, the calendar flags, year, altitude, urban environment, and the borrowed-weather flag. Each group-level term has a job:</p>
 <ul>
-<li><strong>Non-independence:</strong> Station-days are treated as conditionally independent. There are no station or date terms, though stations share weather days and the school-day metric varies only by date. Therefore, the credible intervals are likely optimistic.</li>
-<li><strong>Commuting Proxy:</strong> The school calendar is utilized as a proxy for weekday commuting, which is inherently entangled with vacation seasonality.</li>
-<li><strong>Imputation &amp; Filtering:</strong> As detailed in Section 3, the deterministic meteorological imputation likely attenuates slopes, and the IQR anomaly filter clips genuine physical extremes.</li>
-<li><strong>Unobserved Covariates:</strong> There is no solar radiation, cloud cover, or continuous wind-direction data in the model, meaning statements regarding photochemistry and directional transport are interpretive mechanisms rather than direct observations.</li>
-<li><strong>Crossover Point Estimate:</strong> The temperature threshold where school traffic’s association with ozone reverses, reported in the visual findings, is a point estimate. The model’s interval explicitly excludes zero only below roughly 24°C and above roughly 30°C.</li>
-<li><strong>Reference Baseline:</strong> The “Typical Day” environment baseline calculated in the visualizations is defined by holding continuous covariates at their mean and categorical values at their mode. Specifically, the reference condition evaluates a standard, non-holiday school day during the Rainy season (<em>Lluvias</em>). Continuous physical variables are held precisely at their dataset means: a daily maximum temperature of approximately 22.4°C, a daily mean wind speed of 2.0 m/s, a relative humidity of 48-50%, and an average station altitude of ~2,340 meters.</li>
+<li><strong>Date</strong> (<span class="math inline">\(v_d\)</span>): every station measures the same city on the same day. Without this term, 30 stations on one day would count as 30 independent observations, and the intervals for anything that varies by date would be far too narrow. It also absorbs what isn’t measured, such as inversions or regional smoke.</li>
+<li><strong>Week</strong> (<span class="math inline">\(w_k\)</span>): pollution episodes last several days. Without this term, neighboring days’ date baselines were correlated (about 0.45); adding it widened the intervals of season, year, and city temperature by 30-50%, the honest price of that dependence.</li>
+<li><strong>Station</strong> (<span class="math inline">\(u_s\)</span>): stations differ even within the same environment.</li>
 </ul>
-<hr>
+<p>The five urban environments enter as fixed effects (five groups are too few to estimate a spread), and so does year, to absorb trends. Each model also tests one interaction chosen in advance: whether wind clears PM2.5 equally well in every season, and whether the school-day effect on ozone changes with heat.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 03_model_spec.R: final formulas (continuous predictors are z-scores)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>pm25_formula <span class="ot">=</span> <span class="fu">bf</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  daily_metric <span class="sc">~</span> season <span class="sc">*</span> z_wind_city <span class="sc">+</span> z_wind_dev <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    z_temp_city <span class="sc">+</span> z_temp_dev <span class="sc">+</span> z_rh_city <span class="sc">+</span> z_rh_dev <span class="sc">+</span> z_uva_city <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    day_of_week_f <span class="sc">+</span> is_school_day <span class="sc">+</span> is_fireworks <span class="sc">+</span> is_holiday_other <span class="sc">+</span> is_remote_school <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    is_imputed_met <span class="sc">+</span> year_f <span class="sc">+</span> z_alt <span class="sc">+</span> archetype <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span> <span class="sc">|</span> id_station) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> week_id) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> date_id)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>o3_formula <span class="ot">=</span> <span class="fu">bf</span>(</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  daily_metric <span class="sc">~</span> season <span class="sc">+</span> is_school_day <span class="sc">*</span> z_temp_city <span class="sc">+</span> z_temp_dev <span class="sc">+</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    z_wind_city <span class="sc">+</span> z_wind_dev <span class="sc">+</span> z_rh_city <span class="sc">+</span> z_rh_dev <span class="sc">+</span> z_uva_city <span class="sc">+</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    day_of_week_f <span class="sc">+</span> is_fireworks <span class="sc">+</span> is_holiday_other <span class="sc">+</span> is_remote_school <span class="sc">+</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    is_imputed_met <span class="sc">+</span> year_f <span class="sc">+</span> z_alt <span class="sc">+</span> archetype <span class="sc">+</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    (<span class="dv">1</span> <span class="sc">|</span> id_station) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> week_id) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> date_id)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Priors are weakly informative on the log scale: intercepts centered on typical values, normal(0, 0.3) for coefficients (most effects between about -45% and +80%), and exponential(3) for group-level standard deviations.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 03_model_spec.R: priors (log scale)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>pm25_priors <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">2.9</span>, <span class="fl">0.3</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),   <span class="co"># exp(2.9) ~ 18 µg/m³</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.3</span>),   <span class="at">class =</span> <span class="st">"b"</span>),           <span class="co"># most effects within -45% to +80%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="dv">3</span>),   <span class="at">class =</span> <span class="st">"sd"</span>),          <span class="co"># station, week and date spreads</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.5</span>),   <span class="at">class =</span> <span class="st">"sigma"</span>, <span class="at">lb =</span> <span class="dv">0</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>o3_priors <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">4.3</span>, <span class="fl">0.3</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),   <span class="co"># exp(4.3) ~ 74 ppb</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.3</span>),   <span class="at">class =</span> <span class="st">"b"</span>),</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="dv">3</span>),   <span class="at">class =</span> <span class="st">"sd"</span>),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.5</span>),   <span class="at">class =</span> <span class="st">"sigma"</span>, <span class="at">lb =</span> <span class="dv">0</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Data simulated from the priors alone match the observed medians but have far heavier tails, as intended; after fitting, the posterior standard deviations of the fixed effects are at most a third of the prior ones. The final model is the last of four planned steps (place and calendar only, then weather, then the interactions, then the week term, fireworks split, and UV-A), and the spread of the date baselines shrank as measured weather took over (PM2.5: 0.35 to 0.23; ozone: 0.30 to 0.16). Refitting the step-3 ozone model with a Gamma family left the coefficients essentially unchanged.</p>
 </section>
-<section id="the-auditor-table" class="level2">
-<h2 class="anchored" data-anchor-id="the-auditor-table">7. The Auditor Table</h2>
-<p>To provide full transparency on the raw mathematical slopes, the un-scaled marginal effects derived via <code>marginaleffects::avg_comparisons()</code> are provided below. All continuous variables have been back-transformed from standard deviations to physical, natural units.</p>
-<p>The baseline weekly cycle (Tuesday through Friday) is omitted for clarity, but the <strong>Saturday Peak</strong> and <strong>Sunday Reset</strong> contrasts are preserved to demonstrate the massive atmospheric accumulation that occurs at the end of the workweek before traffic subsides. The intervals are 95% posterior credible intervals (equal-tailed by default). Note that “Excludes Zero” does not imply the magnitude of the effect is certain, given the limitations discussed in Section 6. The data shows wind (roughly −12 ppb per m/s) and heat (roughly +1.6 ppb per °C) are associated with the largest shifts in peak ozone.</p>
-<p>The holiday and school day metrics are mutually exclusive indicators, both compared against weekends and breaks. Calculations are based on a random sample of 1,000 days per pollutant (seed 123).</p>
+<section id="did-the-sampler-work" class="level2">
+<h2 class="anchored" data-anchor-id="did-the-sampler-work">Did the sampler work?</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 03b_Bayesian full models.R: sampler settings for every fit</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">brm</span>(formula, data, <span class="at">family =</span> <span class="fu">lognormal</span>(), <span class="at">prior =</span> priors,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">threads =</span> <span class="fu">threading</span>(<span class="dv">3</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">6000</span>, <span class="at">warmup =</span> <span class="dv">2000</span>, <span class="at">thin =</span> <span class="dv">2</span>, <span class="at">seed =</span> <span class="dv">123</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">list</span>(<span class="at">adapt_delta =</span> <span class="fl">0.95</span>), <span class="at">backend =</span> <span class="st">"cmdstanr"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>The long chains are deliberate: moving any date-level coefficient means hundreds of date baselines must shift together, and a first attempt with 2,000 iterations left those terms with effective sample sizes near 110-150. Each final model keeps 8,000 draws:</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 9%">
+<col style="width: 5%">
+<col style="width: 23%">
+<col style="width: 19%">
+<col style="width: 18%">
+<col style="width: 18%">
+</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">Pollutant</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Driver</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Absolute Shift</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">95% CI Lower</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">95% CI Upper</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Credible Interval Status</th>
+<th style="text-align: left;">Model</th>
+<th style="text-align: right;">Parameters</th>
+<th style="text-align: right;">Max R̂</th>
+<th style="text-align: right;">Min effective sample size</th>
+<th style="text-align: right;">Divergent transitions</th>
+<th style="text-align: right;">% at max tree depth</th>
+<th style="text-align: right;">E-BFMI (min to max)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">PM2.5</td>
+<td style="text-align: right;">2147</td>
+<td style="text-align: right;">1.01</td>
+<td style="text-align: right;">820</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.08 to 1.16</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ozone</td>
+<td style="text-align: right;">2160</td>
+<td style="text-align: right;">1.01</td>
+<td style="text-align: right;">1026</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.06 to 1.21</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="does-the-model-reproduce-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="does-the-model-reproduce-the-data">Does the model reproduce the data?</h2>
+<p>Data simulated from the fitted model closely match the real distribution for both pollutants:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plots/final/appendix/04_posterior_check.png" class="img-fluid figure-img" alt="Two cumulative distribution plots, one per pollutant, where the observed curve sits inside the band of simulated curves."></p>
+<figcaption>Posterior predictive check. Dark line: observed distribution. Light lines: 100 datasets simulated from the fitted model.</figcaption>
+</figure>
+</div>
+<p>By season and urban environment, the medians and 95th percentiles are within 3.5% of the observed values, except for these, where the model runs high on the worst PM2.5 days (positive = model higher; 200 posterior draws):</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Group</th>
+<th style="text-align: left;">Statistic</th>
+<th style="text-align: right;">Observed</th>
+<th style="text-align: right;">Simulated (95% range)</th>
+<th style="text-align: right;">% off</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">PM2.5, industrial north (one station)</td>
+<td style="text-align: left;">95th percentile</td>
+<td style="text-align: right;">34.1</td>
+<td style="text-align: right;">38.8-41.2</td>
+<td style="text-align: right;">+17.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PM2.5, urban core</td>
+<td style="text-align: left;">95th percentile</td>
+<td style="text-align: right;">34.8</td>
+<td style="text-align: right;">37.4-38.8</td>
+<td style="text-align: right;">+9.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PM2.5, dry spring (Mar-May)</td>
+<td style="text-align: left;">95th percentile</td>
+<td style="text-align: right;">37.9</td>
+<td style="text-align: right;">40.0-41.3</td>
+<td style="text-align: right;">+7.4</td>
+</tr>
+</tbody>
+</table>
+<p>The spring miss is worth keeping in mind when reading the article’s wind chart, whose spring line comes from the same model. Residuals have a standard deviation of about 0.17 on the log scale (±17%), and a station’s consecutive days remain correlated (median lag-1 correlation 0.52 for PM2.5, 0.36 for ozone), so intervals for station-level comparisons are somewhat too narrow. The largest single misses are fireworks days at hill stations, which get far less smoke than the city-wide fireworks term assumes.</p>
+<p>The article’s probabilities of a <em>Mala</em> day were checked against the observed share in each temperature or wind bin. The model is off by 0.053 for ozone and 0.033 for PM2.5 on average (0-1 scale), with the largest gap in the rest of the city at 31 °C (0.88 predicted, 0.68 observed):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plots/final/appendix/04_risk_calibration.png" class="img-fluid figure-img" alt="Two panels comparing predicted and observed shares of Mala days. Ozone by daily high temperature, for the southwest basin and the rest of the city; PM2.5 by wind speed, by season. Model and observations track each other closely."></p>
+<figcaption>Calibration of the probability of a Mala day. Points: observed share of days in each temperature or wind bin. Lines: model.</figcaption>
+</figure>
+</div>
+</section>
+<section id="what-did-the-model-find" class="level2">
+<h2 class="anchored" data-anchor-id="what-did-the-model-find">What did the model find?</h2>
+<p>Each row answers: <em>if this one thing changes and everything else stays as it was, how much does the expected level change, on average?</em> Effects are computed over 1,000 sampled station-days per pollutant, without the station, week, and date baselines, with 95% credible intervals; continuous effects are per unit. Year and urban-environment terms are controls and are omitted, and the two place contrasts the article uses are shown instead.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 41%">
+<col style="width: 19%">
+<col style="width: 18%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Pollutant</th>
+<th style="text-align: left;">Effect</th>
+<th style="text-align: right;">Change (units)</th>
+<th style="text-align: right;">Change (%)</th>
+<th style="text-align: left;">Interval</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Ozone (ppb)</td>
-<td style="text-align: left;">Altitude (+100 m)</td>
-<td style="text-align: right;">0.32</td>
-<td style="text-align: right;">0.19</td>
-<td style="text-align: right;">0.44</td>
+<td style="text-align: left;">City wind speed (+1 m/s)</td>
+<td style="text-align: right;">-24.01 (-25.85 to -22.27)</td>
+<td style="text-align: right;">-29.1% (-30.8 to -27.4)</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone (ppb)</td>
-<td style="text-align: left;">Data Imputation Used</td>
-<td style="text-align: right;"><span style="color: firebrick;">-1.2</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-1.63</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.78</span></td>
+<td style="text-align: left;">Photochemical Basin vs rest of the city (typical day)</td>
+<td style="text-align: right;">12.36 (12.00 to 12.76)</td>
+<td style="text-align: right;">+17.0% (16.5 to 17.4)</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone (ppb)</td>
-<td style="text-align: left;">Holiday Traffic (vs. Breaks/Weekends)</td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.36</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-1.66</span></td>
-<td style="text-align: right;">1.03</td>
+<td style="text-align: left;">Rainy season (vs.&nbsp;cold-dry)</td>
+<td style="text-align: right;">-10.72 (-13.63 to -7.71)</td>
+<td style="text-align: right;">-13.6% (-16.8 to -9.9)</td>
+<td style="text-align: left;">Excludes Zero</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ozone (ppb)</td>
+<td style="text-align: left;">City midday UV-A (+1 mW/cm²)</td>
+<td style="text-align: right;">8.06 (6.54 to 9.62)</td>
+<td style="text-align: right;">+10.9% (8.8 to 13.0)</td>
+<td style="text-align: left;">Excludes Zero</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ozone (ppb)</td>
+<td style="text-align: left;">Fireworks day, Dec 25 / Jan 1 (vs.&nbsp;non-school weekday)</td>
+<td style="text-align: right;">8.02 (-0.05 to 17.23)</td>
+<td style="text-align: right;">+10.7% (-0.1 to 22.9)</td>
 <td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone (ppb)</td>
-<td style="text-align: left;">Hot-Dry Spring (vs. Winter)</td>
-<td style="text-align: right;">13.74</td>
-<td style="text-align: right;">13.1</td>
-<td style="text-align: right;">14.39</td>
+<td style="text-align: left;">Station windier than city (+1 m/s)</td>
+<td style="text-align: right;">-5.61 (-5.97 to -5.25)</td>
+<td style="text-align: right;">-7.3% (-7.7 to -6.9)</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone (ppb)</td>
-<td style="text-align: left;">Max Temperature (+1 °C)</td>
-<td style="text-align: right;">1.55</td>
-<td style="text-align: right;">1.5</td>
-<td style="text-align: right;">1.6</td>
+<td style="text-align: left;">City max temperature (+1 °C)</td>
+<td style="text-align: right;">5.55 (4.95 to 6.19)</td>
+<td style="text-align: right;">+6.9% (6.2 to 7.6)</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone (ppb)</td>
-<td style="text-align: left;">Rainy Season (vs. Winter)</td>
-<td style="text-align: right;">1.72</td>
-<td style="text-align: right;">1.21</td>
-<td style="text-align: right;">2.23</td>
-<td style="text-align: left;">Excludes Zero</td>
+<td style="text-align: left;">Other holiday (vs.&nbsp;non-school weekday)</td>
+<td style="text-align: right;">-1.87 (-5.88 to 2.32)</td>
+<td style="text-align: right;">-2.5% (-7.8 to 3.1)</td>
+<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone (ppb)</td>
-<td style="text-align: left;">Relative Humidity (+1%)</td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.31</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.33</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.3</span></td>
+<td style="text-align: left;">Remote-school period, 2021 (vs.&nbsp;non-school weekday)</td>
+<td style="text-align: right;">-1.86 (-5.34 to 1.86)</td>
+<td style="text-align: right;">-2.5% (-7.1 to 2.5)</td>
+<td style="text-align: left;">Spans Zero</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ozone (ppb)</td>
+<td style="text-align: left;">School day (vs.&nbsp;non-school weekday)</td>
+<td style="text-align: right;">-1.87 (-3.85 to 0.16)</td>
+<td style="text-align: right;">-2.5% (-5.0 to 0.2)</td>
+<td style="text-align: left;">Spans Zero</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ozone (ppb)</td>
+<td style="text-align: left;">Saturday (vs.&nbsp;Monday)</td>
+<td style="text-align: right;">1.80 (-0.75 to 4.33)</td>
+<td style="text-align: right;">+2.5% (-1.0 to 6.0)</td>
+<td style="text-align: left;">Spans Zero</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ozone (ppb)</td>
+<td style="text-align: left;">Hot-dry season (vs.&nbsp;cold-dry)</td>
+<td style="text-align: right;">0.77 (-2.37 to 3.87)</td>
+<td style="text-align: right;">+1.0% (-2.9 to 5.0)</td>
+<td style="text-align: left;">Spans Zero</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ozone (ppb)</td>
+<td style="text-align: left;">Station hotter than city (+1 °C)</td>
+<td style="text-align: right;">0.62 (0.51 to 0.72)</td>
+<td style="text-align: right;">+0.8% (0.7 to 1.0)</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone (ppb)</td>
-<td style="text-align: left;">Saturday Peak (vs. Monday)</td>
-<td style="text-align: right;">4.02</td>
-<td style="text-align: right;">3.07</td>
-<td style="text-align: right;">4.93</td>
+<td style="text-align: left;">Day with borrowed weather data</td>
+<td style="text-align: right;">-0.46 (-0.77 to -0.17)</td>
+<td style="text-align: right;">-0.6% (-1.0 to -0.2)</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone (ppb)</td>
-<td style="text-align: left;">School Commute Active (vs. Breaks/Weekends)</td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.84</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-1.48</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.26</span></td>
+<td style="text-align: left;">City relative humidity (+1%)</td>
+<td style="text-align: right;">0.18 (0.08 to 0.27)</td>
+<td style="text-align: right;">+0.2% (0.1 to 0.3)</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone (ppb)</td>
-<td style="text-align: left;">Sunday Reset (vs. Monday)</td>
-<td style="text-align: right;">2.66</td>
-<td style="text-align: right;">1.73</td>
-<td style="text-align: right;">3.59</td>
-<td style="text-align: left;">Excludes Zero</td>
+<td style="text-align: left;">Altitude (+100 m)</td>
+<td style="text-align: right;">-0.15 (-1.43 to 1.11)</td>
+<td style="text-align: right;">-0.2% (-1.9 to 1.5)</td>
+<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone (ppb)</td>
-<td style="text-align: left;">Wind Speed (+1 m/s)</td>
-<td style="text-align: right;"><span style="color: firebrick;">-11.82</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-12.18</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-11.48</span></td>
+<td style="text-align: left;">Sunday (vs.&nbsp;Monday)</td>
+<td style="text-align: right;">0.11 (-2.30 to 2.68)</td>
+<td style="text-align: right;">+0.1% (-3.1 to 3.7)</td>
+<td style="text-align: left;">Spans Zero</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ozone (ppb)</td>
+<td style="text-align: left;">Station more humid than city (+1%)</td>
+<td style="text-align: right;">0.07 (0.04 to 0.11)</td>
+<td style="text-align: right;">+0.1% (0.0 to 0.1)</td>
+<td style="text-align: left;">Excludes Zero</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PM2.5 (µg/m³)</td>
+<td style="text-align: left;">Fireworks day, Dec 25 / Jan 1 (vs.&nbsp;non-school weekday)</td>
+<td style="text-align: right;">19.89 (14.24 to 26.24)</td>
+<td style="text-align: right;">+104.5% (74.8 to 137.3)</td>
+<td style="text-align: left;">Excludes Zero</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PM2.5 (µg/m³)</td>
+<td style="text-align: left;">City wind speed (+1 m/s)</td>
+<td style="text-align: right;">-6.57 (-7.29 to -5.84)</td>
+<td style="text-align: right;">-30.9% (-33.5 to -28.1)</td>
+<td style="text-align: left;">Excludes Zero</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PM2.5 (µg/m³)</td>
+<td style="text-align: left;">Rainy season (vs.&nbsp;cold-dry)</td>
+<td style="text-align: right;">-6.32 (-7.44 to -5.24)</td>
+<td style="text-align: right;">-30.0% (-33.9 to -25.8)</td>
+<td style="text-align: left;">Excludes Zero</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PM2.5 (µg/m³)</td>
+<td style="text-align: left;">Hills (2,300 m and up) vs valley floor (typical day)</td>
+<td style="text-align: right;">-4.42 (-4.56 to -4.28)</td>
+<td style="text-align: right;">-22.3% (-22.7 to -21.9)</td>
+<td style="text-align: left;">Excludes Zero</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PM2.5 (µg/m³)</td>
+<td style="text-align: left;">Saturday (vs.&nbsp;Monday)</td>
+<td style="text-align: right;">1.52 (0.58 to 2.49)</td>
+<td style="text-align: right;">+8.4% (3.1 to 14.0)</td>
+<td style="text-align: left;">Excludes Zero</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PM2.5 (µg/m³)</td>
+<td style="text-align: left;">Station windier than city (+1 m/s)</td>
+<td style="text-align: right;">-1.49 (-1.65 to -1.35)</td>
+<td style="text-align: right;">-7.7% (-8.3 to -7.0)</td>
+<td style="text-align: left;">Excludes Zero</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PM2.5 (µg/m³)</td>
+<td style="text-align: left;">City max temperature (+1 °C)</td>
+<td style="text-align: right;">1.35 (1.12 to 1.58)</td>
+<td style="text-align: right;">+6.6% (5.6 to 7.6)</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Altitude (+100 m)</td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.59</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.64</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.54</span></td>
+<td style="text-align: right;">-0.86 (-1.24 to -0.46)</td>
+<td style="text-align: right;">-4.6% (-6.7 to -2.5)</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
-<td style="text-align: left;">Data Imputation Used</td>
-<td style="text-align: right;">0.38</td>
-<td style="text-align: right;">0.2</td>
-<td style="text-align: right;">0.56</td>
+<td style="text-align: left;">City midday UV-A (+1 mW/cm²)</td>
+<td style="text-align: right;">-0.73 (-1.23 to -0.22)</td>
+<td style="text-align: right;">-3.8% (-6.4 to -1.1)</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
-<td style="text-align: left;">Holiday Traffic (vs. Breaks/Weekends)</td>
-<td style="text-align: right;">1.64</td>
-<td style="text-align: right;">1.11</td>
-<td style="text-align: right;">2.19</td>
-<td style="text-align: left;">Excludes Zero</td>
+<td style="text-align: left;">Other holiday (vs.&nbsp;non-school weekday)</td>
+<td style="text-align: right;">0.68 (-0.89 to 2.33)</td>
+<td style="text-align: right;">+3.6% (-4.6 to 12.1)</td>
+<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
-<td style="text-align: left;">Hot-Dry Spring (vs. Winter)</td>
-<td style="text-align: right;">2.26</td>
-<td style="text-align: right;">1.98</td>
-<td style="text-align: right;">2.54</td>
-<td style="text-align: left;">Excludes Zero</td>
+<td style="text-align: left;">Remote-school period, 2021 (vs.&nbsp;non-school weekday)</td>
+<td style="text-align: right;">-0.51 (-1.77 to 0.91)</td>
+<td style="text-align: right;">-2.6% (-9.2 to 4.7)</td>
+<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
-<td style="text-align: left;">Max Temperature (+1 °C)</td>
-<td style="text-align: right;">0.26</td>
-<td style="text-align: right;">0.24</td>
-<td style="text-align: right;">0.28</td>
-<td style="text-align: left;">Excludes Zero</td>
+<td style="text-align: left;">Hot-dry season (vs.&nbsp;cold-dry)</td>
+<td style="text-align: right;">0.34 (-0.95 to 1.72)</td>
+<td style="text-align: right;">+1.6% (-4.4 to 8.4)</td>
+<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
-<td style="text-align: left;">Rainy Season (vs. Winter)</td>
-<td style="text-align: right;"><span style="color: firebrick;">-5.12</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-5.32</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-4.92</span></td>
+<td style="text-align: left;">Day with borrowed weather data</td>
+<td style="text-align: right;">0.30 (0.17 to 0.42)</td>
+<td style="text-align: right;">+1.6% (0.9 to 2.2)</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
-<td style="text-align: left;">Relative Humidity (+1%)</td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.05</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.05</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-0.04</span></td>
-<td style="text-align: left;">Excludes Zero</td>
+<td style="text-align: left;">School day (vs.&nbsp;non-school weekday)</td>
+<td style="text-align: right;">-0.21 (-0.96 to 0.60)</td>
+<td style="text-align: right;">-1.1% (-4.9 to 3.2)</td>
+<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
-<td style="text-align: left;">Saturday Peak (vs. Monday)</td>
-<td style="text-align: right;">2.06</td>
-<td style="text-align: right;">1.69</td>
-<td style="text-align: right;">2.41</td>
+<td style="text-align: left;">Station more humid than city (+1%)</td>
+<td style="text-align: right;">0.17 (0.15 to 0.19)</td>
+<td style="text-align: right;">+0.9% (0.8 to 0.9)</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
-<td style="text-align: left;">School Commute Active (vs. Breaks/Weekends)</td>
-<td style="text-align: right;">0.3</td>
-<td style="text-align: right;">0.05</td>
-<td style="text-align: right;">0.53</td>
-<td style="text-align: left;">Excludes Zero</td>
+<td style="text-align: left;">Sunday (vs.&nbsp;Monday)</td>
+<td style="text-align: right;">-0.13 (-1.00 to 0.76)</td>
+<td style="text-align: right;">-0.7% (-5.4 to 4.3)</td>
+<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
-<td style="text-align: left;">Sunday Reset (vs. Monday)</td>
-<td style="text-align: right;">0.5</td>
-<td style="text-align: right;">0.16</td>
-<td style="text-align: right;">0.83</td>
+<td style="text-align: left;">Station hotter than city (+1 °C)</td>
+<td style="text-align: right;">0.11 (0.06 to 0.15)</td>
+<td style="text-align: right;">+0.6% (0.3 to 0.8)</td>
 <td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
-<td style="text-align: left;">Wind Speed (+1 m/s)</td>
-<td style="text-align: right;"><span style="color: firebrick;">-3.69</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-3.83</span></td>
-<td style="text-align: right;"><span style="color: firebrick;">-3.54</span></td>
-<td style="text-align: left;">Excludes Zero</td>
+<td style="text-align: left;">City relative humidity (+1%)</td>
+<td style="text-align: right;">0.03 (-0.00 to 0.07)</td>
+<td style="text-align: right;">+0.2% (-0.0 to 0.4)</td>
+<td style="text-align: left;">Spans Zero</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<hr>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 04_Bayesian visualize.R: effects in real units</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>re_none <span class="ot">=</span> <span class="cn">NA</span>   <span class="co"># population-level predictions: no station, week or date baselines</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>pm25_sample <span class="ot">=</span> pm25_data <span class="sc">%&gt;%</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">1000</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>pm25_eff <span class="ot">=</span> <span class="fu">avg_comparisons</span>(m_pm25, <span class="at">newdata =</span> pm25_sample, <span class="at">re_formula =</span> re_none)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>pm25_rat <span class="ot">=</span> <span class="fu">avg_comparisons</span>(m_pm25, <span class="at">newdata =</span> pm25_sample, <span class="at">re_formula =</span> re_none,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>                           <span class="at">comparison =</span> <span class="st">"ratioavg"</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># z-scored terms: the +1 SD change is divided by the SD for "per unit";</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ratios become % per unit as 100 * (ratio^(1 / SD) - 1)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>Sunlight and heat move together (correlation 0.71), so their separate ozone effects are less certain than they look; their combined effect is the solid finding.</p>
+<p><strong>The day versus the place.</strong> Each block of the model’s linear predictor was summarized by its standard deviation across station-days on the log scale, expressed as a typical swing, exp(sd) - 1, with blocks combined in quadrature (an approximation that treats them as independent):</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plots/final/appendix/05_day_vs_place.png" class="img-fluid figure-img" alt="Bar chart comparing the typical swing in each pollutant explained by the weather that day, everything else about the day, and where you live. For both pollutants, the day explains more than the place."></p>
+<figcaption>Typical swing in each pollutant from the weather that day, everything else about the day, and the place.</figcaption>
+</figure>
+</div>
+<p><strong>Place.</strong> Only two place contrasts are large and consistent enough to report: southwest basin stations average 12.4 ppb (17%) more ozone than the rest of the city, and stations at 2,300 m and above average 4.4 µg/m³ (22%) less PM2.5 than the valley floor. Their narrow intervals are conditional on these particular stations.</p>
+<p><strong>School days.</strong> On average, school days change neither pollutant detectably. For ozone, they are 2-5 ppb lower on cool days (credible below about 24 °C) and no different on hot ones. The 2021 remote-school period shows no effect either, but without a pre-pandemic baseline it can’t say whether less commuting cleans the air.</p>
+<p><strong>Traffic markers.</strong> Gases that come almost entirely from exhaust measure traffic directly, so they show how much PM2.5 responds to a real drop in traffic. Morning rush (6:00-9:59) averages, with 95% block-bootstrap intervals:</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 48%">
+<col style="width: 33%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Marker</th>
+<th style="text-align: left;">Comparison</th>
+<th style="text-align: right;">Difference (%)</th>
+<th style="text-align: right;">Days</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">School day vs non-school weekday</td>
+<td style="text-align: right;">+6.3 (-4.8 to 16.8)</td>
+<td style="text-align: right;">1151</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Saturday vs weekday</td>
+<td style="text-align: right;">-19.0 (-24.0 to -13.5)</td>
+<td style="text-align: right;">1664</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NO</td>
+<td style="text-align: left;">Sunday vs weekday</td>
+<td style="text-align: right;">-52.8 (-56.0 to -49.6)</td>
+<td style="text-align: right;">1664</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NOX</td>
+<td style="text-align: left;">School day vs non-school weekday</td>
+<td style="text-align: right;">+5.4 (-2.3 to 12.2)</td>
+<td style="text-align: right;">1151</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">NOX</td>
+<td style="text-align: left;">Saturday vs weekday</td>
+<td style="text-align: right;">-13.2 (-16.7 to -9.3)</td>
+<td style="text-align: right;">1664</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">NOX</td>
+<td style="text-align: left;">Sunday vs weekday</td>
+<td style="text-align: right;">-38.9 (-41.5 to -36.3)</td>
+<td style="text-align: right;">1664</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CO</td>
+<td style="text-align: left;">School day vs non-school weekday</td>
+<td style="text-align: right;">+8.4 (1.5 to 14.7)</td>
+<td style="text-align: right;">1151</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CO</td>
+<td style="text-align: left;">Saturday vs weekday</td>
+<td style="text-align: right;">-16.1 (-19.7 to -12.6)</td>
+<td style="text-align: right;">1664</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CO</td>
+<td style="text-align: left;">Sunday vs weekday</td>
+<td style="text-align: right;">-30.7 (-33.8 to -27.6)</td>
+<td style="text-align: right;">1664</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PM2.5</td>
+<td style="text-align: left;">School day vs non-school weekday</td>
+<td style="text-align: right;">+2.8 (-6.2 to 11.5)</td>
+<td style="text-align: right;">1151</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">PM2.5</td>
+<td style="text-align: left;">Saturday vs weekday</td>
+<td style="text-align: right;">+1.6 (-3.5 to 6.8)</td>
+<td style="text-align: right;">1664</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">PM2.5</td>
+<td style="text-align: left;">Sunday vs weekday</td>
+<td style="text-align: right;">-7.6 (-12.6 to -2.7)</td>
+<td style="text-align: right;">1664</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>Ozone near traffic.</strong> Fresh exhaust (NO) turns ozone into NO₂, so the total oxidant (Ox = O₃ + NO₂) is a fairer comparison between stations. Across stations, afternoon ozone correlates -0.46 with morning NO, while Ox doesn’t correlate with it at all (-0.01). Merced, in the center, has some of the lowest ozone (59 ppb) but an Ox of 83 ppb, close to Ajusco Medio (89 ppb), the highest.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="plots/final/appendix/02c_total_oxidant_by_station.png" class="img-fluid figure-img" alt="Station-by-station chart of afternoon ozone and nitrogen dioxide. Central stations have less ozone but more nitrogen dioxide, so their total oxidant is similar to the southwest."></p>
+<figcaption>Total oxidant (O₃ + NO₂) by station, afternoon averages.</figcaption>
+</figure>
+</div>
 </section>
-<section id="computing-environment" class="level2">
-<h2 class="anchored" data-anchor-id="computing-environment">8. Computing Environment</h2>
-<p>The data harmonization, spatial engineering, and Hamiltonian Monte Carlo sampling were executed using the following core infrastructure:</p>
-<ul>
-<li><strong>R Version:</strong> 4.5.1</li>
-<li><strong>brms:</strong> 2.23.0 (Bayesian Regression Models using Stan)</li>
-<li><strong>cmdstanr:</strong> 0.9.0 (Lightweight R interface to CmdStan)</li>
-<li><strong>marginaleffects:</strong> 1.0.0 (Marginal effects and contrasts for complex models)</li>
-<li><strong>bayesplot:</strong> 1.16.0 (Plotting Bayesian models)</li>
-<li><strong>tidyverse:</strong> 2.0.0 (Data engineering and grammar of graphics)</li>
-<li><strong>patchwork:</strong> 1.3.2 (Plot composition and alignment)</li>
-<li><strong>slider:</strong> 0.3.3 (Rolling window functions for Statistical Process Control)</li>
-</ul>
-<p><em>(End of Appendix)</em></p>
+<section id="how-were-the-articles-health-and-timing-numbers-computed" class="level2">
+<h2 class="anchored" data-anchor-id="how-were-the-articles-health-and-timing-numbers-computed">How were the article’s health and timing numbers computed?</h2>
+<p>These are descriptive summaries of the station data combined with published figures, not model outputs.</p>
+<p><strong>Thresholds.</strong> The categories come from <a href="https://sinaica.inecc.gob.mx/archivo/noms/NOM-172-SEMARNAT-2023-Indice-AIRE-y-SALUD.pdf" title="NOM-172-SEMARNAT-2023. Lineamientos para la obtención y comunicación del índice de calidad del aire y riesgos a la salud. Diario Oficial de la Federación.">NOM-172-SEMARNAT-2023</a>. The top of <em>Aceptable</em> equals the legal limits of <a href="http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NOM-025-SSA1-2021.pdf" title="NOM-025-SSA1-2021. Salud ambiental. Criterio para evaluar la calidad del aire ambiente, con respecto a las partículas suspendidas PM10 y PM2.5. Diario Oficial de la Federación.">NOM-025-SSA1-2021</a> and <a href="http://www.aire.cdmx.gob.mx/descargas/monitoreo/normatividad/NOM-020-SSA1-2021.pdf" title="NOM-020-SSA1-2021. Salud ambiental. Criterio para evaluar la calidad del aire ambiente, con respecto al ozono (O3). Diario Oficial de la Federación.">NOM-020-SSA1-2021</a>. The PM2.5 limit is being phased in (41, then 33, then 25 µg/m³ since January 2026), and the article uses 25.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Category</th>
+<th style="text-align: right;">Ozone, 1-hour (ppb)</th>
+<th style="text-align: right;">PM2.5, 24-hour (µg/m³)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><em>Buena</em></td>
+<td style="text-align: right;">up to 58</td>
+<td style="text-align: right;">up to 15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>Aceptable</em></td>
+<td style="text-align: right;">58-90</td>
+<td style="text-align: right;">15-25</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><em>Mala</em></td>
+<td style="text-align: right;">90-135</td>
+<td style="text-align: right;">25-79</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>Muy mala</em></td>
+<td style="text-align: right;">135-175</td>
+<td style="text-align: right;">79-130</td>
+</tr>
+</tbody>
+</table>
+<p>The top of <em>Buena</em> matches the <a href="https://iris.who.int/server/api/core/bitstreams/551b515e-2a32-4e1a-a58c-cdaecd395b19/content" title="World Health Organization (2021). WHO global air quality guidelines: particulate matter (PM2.5 and PM10), ozone, nitrogen dioxide, sulfur dioxide and carbon monoxide. Geneva: WHO.">WHO 2021 guidelines</a>: directly for PM2.5 (15 µg/m³), and for ozone through NOM-172’s factor of 1.14, which converts the WHO’s 8-hour value (about 51 ppb) to 58 ppb over one hour. In these data, though, the 1-hour peak is a median 1.28 times the highest 8-hour average, so the 1-hour test is stricter: 75% of station-days exceed 58 ppb, but 64% fail the WHO’s own 8-hour test. The article’s “two out of three” uses the WHO’s test. Both WHO short-term guidelines allow three or four exceedance days a year.</p>
+<p><strong>Share of the long-term harm.</strong> For each PM2.5 station-day, the excess above the WHO annual guideline (5 µg/m³) was summed by category, which assumes harm grows linearly with concentration, as the AQLI method does.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Category</th>
+<th style="text-align: right;">Share of station-days</th>
+<th style="text-align: right;">Share of the excess</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><em>Buena</em></td>
+<td style="text-align: right;">31.9%</td>
+<td style="text-align: right;">13.0%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>Aceptable</em></td>
+<td style="text-align: right;">44.3%</td>
+<td style="text-align: right;">44.5%</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><em>Mala</em></td>
+<td style="text-align: right;">23.7%</td>
+<td style="text-align: right;">42.2%</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>Muy mala</em></td>
+<td style="text-align: right;">0.1%</td>
+<td style="text-align: right;">0.3%</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Life expectancy.</strong> The <a href="https://aqli.epic.uchicago.edu/files/Report%20-%20English%20Global%20View.pdf" title="Energy Policy Institute at the University of Chicago (2025). Air Quality Life Index: Annual Update.">Air Quality Life Index</a> turns <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC5625887/pdf/pnas.201616784.pdf" title="Ebenstein, A., Fan, M., Greenstone, M., He, G., &amp; Zhou, M. (2017). New evidence on the impact of sustained exposure to air pollution on life expectancy from China's Huai River Policy. PNAS.">Ebenstein et al.&nbsp;(2017)</a> into 0.98 years of life expectancy per 10 µg/m³ of lifelong PM2.5. Ebenstein’s own estimate is 0.64 years per 10 µg/m³ of PM10 (95% CI 0.21 to 1.07); scaling that interval by AQLI’s factor (0.98 / 0.64) gives the range.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 05_article_charts.R: years of life expectancy lost vs the WHO annual guideline</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>city_mean <span class="ot">=</span> <span class="fl">19.8</span>                                     <span class="co"># mean of station annual means</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>years_lost <span class="ot">=</span> <span class="cf">function</span>(per_10) (city_mean <span class="sc">-</span> <span class="dv">5</span>) <span class="sc">*</span> per_10 <span class="sc">/</span> <span class="dv">10</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">years_lost</span>(<span class="fl">0.98</span>)                                     <span class="co"># 1.45 (central)</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">years_lost</span>(<span class="fl">0.21</span> <span class="sc">*</span> <span class="fl">0.98</span> <span class="sc">/</span> <span class="fl">0.64</span>)                       <span class="co"># 0.48 (low)</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">years_lost</span>(<span class="fl">1.07</span> <span class="sc">*</span> <span class="fl">0.98</span> <span class="sc">/</span> <span class="fl">0.64</span>)                       <span class="co"># 2.42 (high)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<p>The city mean of 19.8 µg/m³ (station-years from 12.4 to 25.1) is close to AQLI’s satellite values for Mexico City (20.6 to 21.5 in 2021-2023), and AQLI’s own estimate for the city is 1.6 years (<a href="https://aqli.epic.uchicago.edu/countryPage/M%C3%A9xico" title="Energy Policy Institute at the University of Chicago. Air Quality Life Index, country page: México.">country page</a>). Capping every day above 25 µg/m³ at 25 lowers the figure only from 1.44 to 1.29 years; cutting every day by 20% lowers it to 1.05.</p>
+<p><strong>Time of day.</strong> The timing figures are city averages of the hourly values by season, without the model, comparing 19:00-20:59 with 9:00 for PM2.5, and 6:00-7:59 with 14:00 for ozone.</p>
+</section>
+<section id="what-this-analysis-cant-tell-you" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-analysis-cant-tell-you">What this analysis can’t tell you</h2>
+<p><strong>Associations, not causes.</strong> The model describes how pollution moves with weather, calendar, and place. The article’s mechanisms (the inversion lid, ozone forming downwind, spring fire smoke) are explanations consistent with the data and with the <a href="https://www.aire.cdmx.gob.mx/descargas/publicaciones/flippingbook/proaire2021-2030/pdf/CapitulosVersionCompleta-ProAireZMVM2021-2030/ProAireZMVM2021-2030-Capitulo3.pdf" title="ProAire ZMVM 2021-2030. Programa de Gestión para Mejorar la Calidad del Aire de la Zona Metropolitana del Valle de México, capítulo 3: Diagnóstico de la calidad del aire.">city’s air quality program</a>, not things the model observes.</p>
+<p><strong>Mass, not chemistry.</strong> RAMA measures particle mass. Soot, dust, sulfate, and fireworks smoke count the same here, though they likely differ in toxicity.</p>
+<p><strong>Stations, not lungs.</strong> Stations measure above street level, where readings are usually lower than at the curb; in <a href="https://www.sciencedirect.com/science/article/abs/pii/S1352231019306831" title="Velasco, E., et al. (2019). Particle exposure and inhaled dose while commuting by public transport in Mexico City. Atmospheric Environment, 117044.">Velasco et al.&nbsp;(2019)</a>, a park off Avenida Cuauhtémoc read 35 µg/m³ while the official station under a kilometer away read 26.</p>
+<p><strong>Borrowed evidence.</strong> The life-expectancy coefficient comes from China and a different particle mix. Velasco et al.&nbsp;measured one route at midday over two weeks of the dry season. Tainio et al.’s exercise break-even uses urban-background levels, and Mexico City’s altitude raises the air breathed for a given effort somewhat.</p>
+</section>
+<section id="what-i-considered-and-left-out" class="level2">
+<h2 class="anchored" data-anchor-id="what-i-considered-and-left-out">What I considered and left out</h2>
+<p><strong>Five urban environments as a headline.</strong> The grouping stays in the model as a control, but once altitude and each station’s baseline are accounted for, three of the five barely differ. Station baselines show no relationship with built-up or vegetated land cover (r ≈ 0), so census-based measures of urban form weren’t pursued either.</p>
+<p><strong>More models.</strong> Separate models of total oxidant or PM10, or a joint model of both pollutants, would each answer a narrower question. The two models’ unexplained date baselines correlate at 0.60, so bad days for one tend to be bad for the other; a joint model would formalize that link without changing any finding.</p>
+<p><strong>Specific sources.</strong> Attributing pollution to the Tula refinery and power plant, or to household wood and charcoal, would need source-apportionment data this analysis doesn’t have.</p>
+</section>
+<section id="software-and-reproducibility" class="level2">
+<h2 class="anchored" data-anchor-id="software-and-reproducibility">Software and reproducibility</h2>
+<p>The analysis runs as a sequence of R scripts: <code>00_calendarios.R</code> (school calendar), <code>01_tidy.R</code> (cleaning), <code>02_build_daily_model_data.R</code> (gap filling and model datasets), <code>02b</code> and <code>02c</code> (exploratory and descriptive checks), <code>03a</code> (prior simulation), <code>03b</code> (model fits), <code>04</code> (diagnostics, effects, calibration), and <code>05</code> (article charts and health numbers), with seeds fixed at 123.</p>
+<p>It was built in <a href="https://www.r-project.org/" title="R Core Team (2025). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna.">R</a> 4.5.1. The models were fitted in <a href="https://mc-stan.org/" title="Stan Development Team. CmdStan: the command-line interface to Stan.">Stan</a> (CmdStan 2.40.0) through <a href="https://paulbuerkner.com/brms/" title="Bürkner, P.-C. (2017). brms: An R package for Bayesian multilevel models using Stan. Journal of Statistical Software, 80(1).">brms</a> 2.23.0 and <a href="https://mc-stan.org/cmdstanr/" title="Gabry, J., Češnovar, R., Johnson, A., &amp; Bronder, S. cmdstanr: R interface to CmdStan.">cmdstanr</a> 0.9.0, and checked with <a href="https://mc-stan.org/posterior/" title="Bürkner, P.-C., Gabry, J., Kay, M., &amp; Vehtari, A. posterior: Tools for working with posterior distributions.">posterior</a> 1.7.0 and <a href="https://mc-stan.org/bayesplot/" title="Gabry, J., &amp; Mahr, T. bayesplot: Plotting for Bayesian models.">bayesplot</a> 1.16.0. Effects were computed with <a href="https://marginaleffects.com/" title="Arel-Bundock, V., Greifer, N., &amp; Heiss, A. (2024). How to interpret statistical models using marginaleffects for R and Python. Journal of Statistical Software, 111(9).">marginaleffects</a> 1.0.0. Data handling used the <a href="https://www.tidyverse.org/" title="Wickham, H., et al. (2019). Welcome to the tidyverse. Journal of Open Source Software, 4(43), 1686.">tidyverse</a> 2.0.0, <a href="https://cran.r-project.org/package=zoo" title="Zeileis, A., &amp; Grothendieck, G. (2005). zoo: S3 infrastructure for regular and irregular time series. Journal of Statistical Software, 14(6).">zoo</a> 1.9.1, and <a href="https://slider.r-lib.org/" title="Vaughan, D. slider: Sliding window functions.">slider</a> 0.3.3; charts used <a href="https://patchwork.data-imaginist.com/" title="Pedersen, T. L. patchwork: The composer of plots.">patchwork</a> 1.3.2, and this page’s tables <a href="https://yihui.org/knitr/" title="Xie, Y. knitr: A general-purpose package for dynamic report generation in R.">knitr</a>.</p>
+<p>Questions are welcome; you can reach me on <a href="https://www.linkedin.com/in/hector-ruiz-g/">LinkedIn</a>.</p>
 
 
 </section>
@@ -1077,6 +1506,19 @@ window.Quarto = {
   });
   </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Text and charts © 2026 Hector Ruiz, licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Data: SIMAT, Gobierno de la Ciudad de México.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
 
 
 
