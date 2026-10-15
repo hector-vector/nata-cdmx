@@ -1,0 +1,13 @@
+marker,comparison,pct,low,high,days
+NO,School day vs non-school weekday,6.3,-4.8,16.8,1151
+NO,Saturday vs weekday,-19,-24,-13.5,1664
+NO,Sunday vs weekday,-52.8,-56,-49.6,1664
+NOX,School day vs non-school weekday,5.4,-2.3,12.2,1151
+NOX,Saturday vs weekday,-13.2,-16.7,-9.3,1664
+NOX,Sunday vs weekday,-38.9,-41.5,-36.3,1664
+CO,School day vs non-school weekday,8.4,1.5,14.7,1151
+CO,Saturday vs weekday,-16.1,-19.7,-12.6,1664
+CO,Sunday vs weekday,-30.7,-33.8,-27.6,1664
+PM2.5,School day vs non-school weekday,2.8,-6.2,11.5,1151
+PM2.5,Saturday vs weekday,1.6,-3.5,6.8,1664
+PM2.5,Sunday vs weekday,-7.6,-12.6,-2.7,1664

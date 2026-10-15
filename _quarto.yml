@@ -9,8 +9,11 @@ website:
         text: "The Article"
       - href: methodology.qmd
         text: "Technical Appendix"
+  page-footer:
+    center: "Text and charts © 2026 Hector Ruiz, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Data: SIMAT, Gobierno de la Ciudad de México."
 
 format:
   html:
     theme: cosmo
+    css: styles.css
     toc: true
