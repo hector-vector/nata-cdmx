@@ -20,6 +20,25 @@ This appendix explains how the numbers in [the article](index.qmd) were produced
 
 The analysis is observational. The model describes how pollution moves with weather, calendar, and place; it does not establish causes or estimate health effects. Every health figure in the article comes from published research, applied to these data as described in [the section on health numbers](#how-were-the-articles-health-and-timing-numbers-computed).
 
+## What each claim rests on
+
+| Claim in the article | Rests on | Strength | Main caveat |
+|:--|:--|:--|:--|
+| Particles peak mid-morning, ozone early afternoon; evenings have about 30% fewer particles | Hourly city averages | Strong | City average, not your street |
+| Hot, sunny spring days bring more *Mala* ozone days | Daily shares by temperature; model about +7% per °C | Strong | Heat and sun move together |
+| Rainy season: particles about a third lower, ozone about as high as in winter | Seasonal city averages | Strong | Season, not rain itself |
+| Wind clears particles about half as well in spring | Model, checked against observed days | Moderate | Model runs high on the worst spring days |
+| January 1 is the dirtiest day for particles | Daily data, 2022-2025 | Strong | Four winters |
+| Quiet Sundays cut exhaust far more than particles | Morning-rush averages, block bootstrap | Strong | Mornings only |
+| The day matters more than the neighborhood | Model variance split | Strong in direction | The split is approximate |
+| Southwest ozone +17%, hill particles -22% | Model, by station | Moderate to strong | About ±10% for a place without a station |
+| The center's low ozone is partly hidden by exhaust | Ozone + NO₂ by station | Moderate | 27 stations, descriptive |
+| *Aceptable* days carry almost half the long-term toll | Station data | Moderate | Assumes harm grows linearly |
+| About 1.5 years of life expectancy | Published estimates × station data | Indicative | Range 0.5 to 2.5 years; borrowed from other countries |
+| Exercise away from traffic and around ozone; box-fan filter; fitted masks | Published studies | Moderate | Measured in other cities; fit and seal matter |
+
+"Strong" means the claim follows directly from the measurements or holds under every check here. "Moderate" means it depends on the model or on studies done elsewhere. "Indicative" means the size is uncertain, though the direction is not.
+
 ## What data, and what exactly was measured?
 
 All monitoring data are hourly, from January 2021 to December 2025, from Mexico City's air quality monitoring system (SIMAT):
@@ -264,8 +283,9 @@ The article's probabilities of a *Mala* day were checked against the observed sh
 
 ## What did the model find?
 
-Each row answers: *if this one thing changes and everything else stays as it was, how much does the expected level change, on average?* Effects are computed over 1,000 sampled station-days per pollutant, without the station, week, and date baselines, with 95% credible intervals; continuous effects are per unit. Year and urban-environment terms are controls and are omitted, and the two place contrasts the article uses are shown instead.
+The full table of effects answers, row by row: *if this one thing changes and everything else stays as it was, how much does the expected level change, on average?* These are adjusted associations: each row holds the other measured conditions fixed. Effects are computed over 1,000 sampled station-days per pollutant, without the station, week, and date baselines, with 95% credible intervals; continuous effects are per unit. Year and urban-environment terms are controls and are omitted, and the two place contrasts the article uses are shown instead. Throughout, a change within about ±5% is treated as too small to plan around, under a third of the ±17% day-to-day noise.
 
+::: {.callout-note collapse="true" title="All model effects (36 rows)"}
 ```{r}
 #| eval: true
 #| echo: false
@@ -274,11 +294,11 @@ read_csv("plots/final/appendix/04_effects_table.csv", show_col_types = FALSE) %>
     Pollutant,
     Effect = Driver,
     `Change (units)` = sprintf("%.2f (%.2f to %.2f)", Absolute_Shift, `95%_CI_Lower`, `95%_CI_Upper`),
-    `Change (%)` = sprintf("%+.1f%% (%.1f to %.1f)", Pct_Change, Pct_Low, Pct_High),
-    Interval = Credible_Interval_Status
+    `Change (%)` = sprintf("%+.1f%% (%.1f to %.1f)", Pct_Change, Pct_Low, Pct_High)
   ) %>%
-  kable(align = "llrrl")
+  kable(align = "llrr")
 ```
+:::
 
 ```{r}
 # 04_Bayesian visualize.R: effects in real units
@@ -294,13 +314,15 @@ pm25_rat = avg_comparisons(m_pm25, newdata = pm25_sample, re_formula = re_none,
 
 Sunlight and heat move together (correlation 0.71), so their separate ozone effects are less certain than they look; their combined effect is the solid finding.
 
+**Wind by season.** The article compares a still day (6.5 km/h of daily mean city wind) with a breezy one (9.5 km/h), which falls inside every season's typical range (5th to 95th percentile of daily means: dry winter 5.0-9.6 km/h, dry spring 6.5-10.2, rainy season 5.3-10.0), and the chart draws each season only across that range. Over that step, PM2.5 falls by 32% in the rainy season (95% interval 30% to 35%), 30% in the dry winter (26% to 33%), and 17% in the dry spring (12% to 22%). The intervals don't overlap, so the spring difference is not a matter of noise.
+
 **The day versus the place.** Each block of the model's linear predictor was summarized by its standard deviation across station-days on the log scale, expressed as a typical swing, exp(sd) - 1, with blocks combined in quadrature (an approximation that treats them as independent):
 
 ![Typical swing in each pollutant from the weather that day, everything else about the day, and the place.](plots/final/appendix/05_day_vs_place.png){fig-alt="Bar chart comparing the typical swing in each pollutant explained by the weather that day, everything else about the day, and where you live. For both pollutants, the day explains more than the place."}
 
-**Place.** Only two place contrasts are large and consistent enough to report: southwest basin stations average 12.4 ppb (17%) more ozone than the rest of the city, and stations at 2,300 m and above average 4.4 µg/m³ (22%) less PM2.5 than the valley floor. Their narrow intervals are conditional on these particular stations.
+**Place.** Only two place contrasts are large and consistent enough to report: southwest basin stations average 12.4 ppb (17%) more ozone than the rest of the city, and stations at 2,300 m and above average 4.4 µg/m³ (22%) less PM2.5 than the valley floor. Their narrow intervals are conditional on these particular stations; for a place without a station, the station-to-station spread is the better guide, about ±10% for PM2.5 and ±9% for ozone. The article's station and wind charts show a typical day, with the day and week effects at zero. An average day runs slightly higher, by about 2% for ozone and 4% for PM2.5, which moves no station across a color band.
 
-**School days.** On average, school days change neither pollutant detectably. For ozone, they are 2-5 ppb lower on cool days (credible below about 24 °C) and no different on hot ones. The 2021 remote-school period shows no effect either, but without a pre-pandemic baseline it can't say whether less commuting cleans the air.
+**School days.** On average, school days shift both pollutants by less than about 5% (ozone probably slightly lower), too small to plan around. On cool days ozone is 2-5 ppb lower on school days (credible below about 24 °C), but those days are already well inside *Buena*; on hot days there is no difference. The 2021 remote-school period shows no effect either, but without a pre-pandemic baseline it can't say whether less commuting cleans the air.
 
 **Traffic markers.** Gases that come almost entirely from exhaust measure traffic directly, so they show how much PM2.5 responds to a real drop in traffic. Morning rush (6:00-9:59) averages, with 95% block-bootstrap intervals:
 
@@ -358,7 +380,11 @@ years_lost(1.07 * 0.98 / 0.64)                       # 2.42 (high)
 
 The city mean of 19.8 µg/m³ (station-years from 12.4 to 25.1) is close to AQLI's satellite values for Mexico City (20.6 to 21.5 in 2021-2023), and AQLI's own estimate for the city is 1.6 years ([country page](https://aqli.epic.uchicago.edu/countryPage/M%C3%A9xico "Energy Policy Institute at the University of Chicago. Air Quality Life Index, country page: México.")). Capping every day above 25 µg/m³ at 25 lowers the figure only from 1.44 to 1.29 years; cutting every day by 20% lowers it to 1.05.
 
+Two cautions on the source. Ebenstein et al. revisit an earlier study of the same policy whose high-degree polynomial fits were [criticized](https://sites.stat.columbia.edu/gelman/research/published/rd_china_5.pdf "Gelman, A., & Zelizer, A. (2015). Evidence on the deleterious impact of sustained use of polynomial regression on causal inference. Research & Politics, 2(1).") for producing noisy estimates with intervals that are too narrow. And an independent [US study](https://www.nejm.org/doi/full/10.1056/NEJMsa0805646 "Pope, C. A., Ezzati, M., & Dockery, D. W. (2009). Fine-particulate air pollution and life expectancy in the United States. New England Journal of Medicine, 360, 376-386.") found 0.61 ± 0.20 years of life expectancy per 10 µg/m³, which gives about 0.9 years with these data. That is inside the range, and probably low, because it measures the gains from two decades of cleaner air rather than from a lifetime of it.
+
 **Time of day.** The timing figures are city averages of the hourly values by season, without the model, comparing 19:00-20:59 with 9:00 for PM2.5, and 6:00-7:59 with 14:00 for ozone.
+
+**Seasons.** The rainy-season figures are raw seasonal averages of the daily city mean: PM2.5 averages 14.7 µg/m³ in the rainy season, against 21.6 in the dry winter and 23.7 in the dry spring; ozone peaks average 70 ppb, against 72 and 90. The model's season terms aren't used here, because they hold temperature, sun, humidity, and wind fixed, which the seasons themselves don't, and the model has no rain variable.
 
 ## What this analysis can't tell you
 
