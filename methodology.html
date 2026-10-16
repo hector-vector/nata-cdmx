@@ -183,7 +183,8 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul class="collapse">
-  <li><a href="#what-data-and-what-exactly-was-measured" id="toc-what-data-and-what-exactly-was-measured" class="nav-link active" data-scroll-target="#what-data-and-what-exactly-was-measured">What data, and what exactly was measured?</a></li>
+  <li><a href="#what-each-claim-rests-on" id="toc-what-each-claim-rests-on" class="nav-link active" data-scroll-target="#what-each-claim-rests-on">What each claim rests on</a></li>
+  <li><a href="#what-data-and-what-exactly-was-measured" id="toc-what-data-and-what-exactly-was-measured" class="nav-link" data-scroll-target="#what-data-and-what-exactly-was-measured">What data, and what exactly was measured?</a></li>
   <li><a href="#can-the-raw-files-be-trusted-as-published" id="toc-can-the-raw-files-be-trusted-as-published" class="nav-link" data-scroll-target="#can-the-raw-files-be-trusted-as-published">Can the raw files be trusted as published?</a></li>
   <li><a href="#weather-was-often-missing.-how-was-that-handled-and-does-it-bias-anything" id="toc-weather-was-often-missing.-how-was-that-handled-and-does-it-bias-anything" class="nav-link" data-scroll-target="#weather-was-often-missing.-how-was-that-handled-and-does-it-bias-anything">Weather was often missing. How was that handled, and does it bias anything?</a></li>
   <li><a href="#how-were-school-days-holidays-and-fireworks-defined" id="toc-how-were-school-days-holidays-and-fireworks-defined" class="nav-link" data-scroll-target="#how-were-school-days-holidays-and-fireworks-defined">How were school days, holidays, and fireworks defined?</a></li>
@@ -224,6 +225,100 @@ window.Quarto = {
 <p><em>By <a href="https://www.linkedin.com/in/hector-ruiz-g/">Hector Ruiz</a></em></p>
 <p>This appendix explains how the numbers in <a href="./index.html">the article</a> were produced, in roughly the order a skeptical reader would ask about them. It is not a replication package, but the code that matters is shown in folded blocks.</p>
 <p>The analysis is observational. The model describes how pollution moves with weather, calendar, and place; it does not establish causes or estimate health effects. Every health figure in the article comes from published research, applied to these data as described in <a href="#how-were-the-articles-health-and-timing-numbers-computed">the section on health numbers</a>.</p>
+<section id="what-each-claim-rests-on" class="level2">
+<h2 class="anchored" data-anchor-id="what-each-claim-rests-on">What each claim rests on</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Claim in the article</th>
+<th style="text-align: left;">Rests on</th>
+<th style="text-align: left;">Strength</th>
+<th style="text-align: left;">Main caveat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Particles peak mid-morning, ozone early afternoon; evenings have about 30% fewer particles</td>
+<td style="text-align: left;">Hourly city averages</td>
+<td style="text-align: left;">Strong</td>
+<td style="text-align: left;">City average, not your street</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hot, sunny spring days bring more <em>Mala</em> ozone days</td>
+<td style="text-align: left;">Daily shares by temperature; model about +7% per °C</td>
+<td style="text-align: left;">Strong</td>
+<td style="text-align: left;">Heat and sun move together</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Rainy season: particles about a third lower, ozone about as high as in winter</td>
+<td style="text-align: left;">Seasonal city averages</td>
+<td style="text-align: left;">Strong</td>
+<td style="text-align: left;">Season, not rain itself</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Wind clears particles about half as well in spring</td>
+<td style="text-align: left;">Model, checked against observed days</td>
+<td style="text-align: left;">Moderate</td>
+<td style="text-align: left;">Model runs high on the worst spring days</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">January 1 is the dirtiest day for particles</td>
+<td style="text-align: left;">Daily data, 2022-2025</td>
+<td style="text-align: left;">Strong</td>
+<td style="text-align: left;">Four winters</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Quiet Sundays cut exhaust far more than particles</td>
+<td style="text-align: left;">Morning-rush averages, block bootstrap</td>
+<td style="text-align: left;">Strong</td>
+<td style="text-align: left;">Mornings only</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">The day matters more than the neighborhood</td>
+<td style="text-align: left;">Model variance split</td>
+<td style="text-align: left;">Strong in direction</td>
+<td style="text-align: left;">The split is approximate</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Southwest ozone +17%, hill particles -22%</td>
+<td style="text-align: left;">Model, by station</td>
+<td style="text-align: left;">Moderate to strong</td>
+<td style="text-align: left;">About ±10% for a place without a station</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">The center’s low ozone is partly hidden by exhaust</td>
+<td style="text-align: left;">Ozone + NO₂ by station</td>
+<td style="text-align: left;">Moderate</td>
+<td style="text-align: left;">27 stations, descriptive</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><em>Aceptable</em> days carry almost half the long-term toll</td>
+<td style="text-align: left;">Station data</td>
+<td style="text-align: left;">Moderate</td>
+<td style="text-align: left;">Assumes harm grows linearly</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">About 1.5 years of life expectancy</td>
+<td style="text-align: left;">Published estimates × station data</td>
+<td style="text-align: left;">Indicative</td>
+<td style="text-align: left;">Range 0.5 to 2.5 years; borrowed from other countries</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Exercise away from traffic and around ozone; box-fan filter; fitted masks</td>
+<td style="text-align: left;">Published studies</td>
+<td style="text-align: left;">Moderate</td>
+<td style="text-align: left;">Measured in other cities; fit and seal matter</td>
+</tr>
+</tbody>
+</table>
+<p>“Strong” means the claim follows directly from the measurements or holds under every check here. “Moderate” means it depends on the model or on studies done elsewhere. “Indicative” means the size is uncertain, though the direction is not.</p>
+</section>
 <section id="what-data-and-what-exactly-was-measured" class="level2">
 <h2 class="anchored" data-anchor-id="what-data-and-what-exactly-was-measured">What data, and what exactly was measured?</h2>
 <p>All monitoring data are hourly, from January 2021 to December 2025, from Mexico City’s air quality monitoring system (SIMAT):</p>
@@ -595,16 +690,27 @@ v_d \sim \text{Normal}(0, \tau_{\text{date}})
 </section>
 <section id="what-did-the-model-find" class="level2">
 <h2 class="anchored" data-anchor-id="what-did-the-model-find">What did the model find?</h2>
-<p>Each row answers: <em>if this one thing changes and everything else stays as it was, how much does the expected level change, on average?</em> Effects are computed over 1,000 sampled station-days per pollutant, without the station, week, and date baselines, with 95% credible intervals; continuous effects are per unit. Year and urban-environment terms are controls and are omitted, and the two place contrasts the article uses are shown instead.</p>
+<p>The full table of effects answers, row by row: <em>if this one thing changes and everything else stays as it was, how much does the expected level change, on average?</em> These are adjusted associations: each row holds the other measured conditions fixed. Effects are computed over 1,000 sampled station-days per pollutant, without the station, week, and date baselines, with 95% credible intervals; continuous effects are per unit. Year and urban-environment terms are controls and are omitted, and the two place contrasts the article uses are shown instead. Throughout, a change within about ±5% is treated as too small to plan around, under a third of the ±17% day-to-day noise.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="All model effects (36 rows)">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>All model effects (36 rows)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 10%">
-<col style="width: 41%">
-<col style="width: 19%">
-<col style="width: 18%">
-<col style="width: 10%">
+<col style="width: 11%">
+<col style="width: 46%">
+<col style="width: 21%">
+<col style="width: 20%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -612,7 +718,6 @@ v_d \sim \text{Normal}(0, \tau_{\text{date}})
 <th style="text-align: left;">Effect</th>
 <th style="text-align: right;">Change (units)</th>
 <th style="text-align: right;">Change (%)</th>
-<th style="text-align: left;">Interval</th>
 </tr>
 </thead>
 <tbody>
@@ -621,255 +726,222 @@ v_d \sim \text{Normal}(0, \tau_{\text{date}})
 <td style="text-align: left;">City wind speed (+1 m/s)</td>
 <td style="text-align: right;">-24.01 (-25.85 to -22.27)</td>
 <td style="text-align: right;">-29.1% (-30.8 to -27.4)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Photochemical Basin vs rest of the city (typical day)</td>
 <td style="text-align: right;">12.36 (12.00 to 12.76)</td>
 <td style="text-align: right;">+17.0% (16.5 to 17.4)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Rainy season (vs.&nbsp;cold-dry)</td>
 <td style="text-align: right;">-10.72 (-13.63 to -7.71)</td>
 <td style="text-align: right;">-13.6% (-16.8 to -9.9)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">City midday UV-A (+1 mW/cm²)</td>
 <td style="text-align: right;">8.06 (6.54 to 9.62)</td>
 <td style="text-align: right;">+10.9% (8.8 to 13.0)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Fireworks day, Dec 25 / Jan 1 (vs.&nbsp;non-school weekday)</td>
 <td style="text-align: right;">8.02 (-0.05 to 17.23)</td>
 <td style="text-align: right;">+10.7% (-0.1 to 22.9)</td>
-<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Station windier than city (+1 m/s)</td>
 <td style="text-align: right;">-5.61 (-5.97 to -5.25)</td>
 <td style="text-align: right;">-7.3% (-7.7 to -6.9)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">City max temperature (+1 °C)</td>
 <td style="text-align: right;">5.55 (4.95 to 6.19)</td>
 <td style="text-align: right;">+6.9% (6.2 to 7.6)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Other holiday (vs.&nbsp;non-school weekday)</td>
 <td style="text-align: right;">-1.87 (-5.88 to 2.32)</td>
 <td style="text-align: right;">-2.5% (-7.8 to 3.1)</td>
-<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Remote-school period, 2021 (vs.&nbsp;non-school weekday)</td>
 <td style="text-align: right;">-1.86 (-5.34 to 1.86)</td>
 <td style="text-align: right;">-2.5% (-7.1 to 2.5)</td>
-<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">School day (vs.&nbsp;non-school weekday)</td>
 <td style="text-align: right;">-1.87 (-3.85 to 0.16)</td>
 <td style="text-align: right;">-2.5% (-5.0 to 0.2)</td>
-<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Saturday (vs.&nbsp;Monday)</td>
 <td style="text-align: right;">1.80 (-0.75 to 4.33)</td>
 <td style="text-align: right;">+2.5% (-1.0 to 6.0)</td>
-<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Hot-dry season (vs.&nbsp;cold-dry)</td>
 <td style="text-align: right;">0.77 (-2.37 to 3.87)</td>
 <td style="text-align: right;">+1.0% (-2.9 to 5.0)</td>
-<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Station hotter than city (+1 °C)</td>
 <td style="text-align: right;">0.62 (0.51 to 0.72)</td>
 <td style="text-align: right;">+0.8% (0.7 to 1.0)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Day with borrowed weather data</td>
 <td style="text-align: right;">-0.46 (-0.77 to -0.17)</td>
 <td style="text-align: right;">-0.6% (-1.0 to -0.2)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">City relative humidity (+1%)</td>
 <td style="text-align: right;">0.18 (0.08 to 0.27)</td>
 <td style="text-align: right;">+0.2% (0.1 to 0.3)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Altitude (+100 m)</td>
 <td style="text-align: right;">-0.15 (-1.43 to 1.11)</td>
 <td style="text-align: right;">-0.2% (-1.9 to 1.5)</td>
-<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Sunday (vs.&nbsp;Monday)</td>
 <td style="text-align: right;">0.11 (-2.30 to 2.68)</td>
 <td style="text-align: right;">+0.1% (-3.1 to 3.7)</td>
-<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Ozone (ppb)</td>
 <td style="text-align: left;">Station more humid than city (+1%)</td>
 <td style="text-align: right;">0.07 (0.04 to 0.11)</td>
 <td style="text-align: right;">+0.1% (0.0 to 0.1)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Fireworks day, Dec 25 / Jan 1 (vs.&nbsp;non-school weekday)</td>
 <td style="text-align: right;">19.89 (14.24 to 26.24)</td>
 <td style="text-align: right;">+104.5% (74.8 to 137.3)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">City wind speed (+1 m/s)</td>
 <td style="text-align: right;">-6.57 (-7.29 to -5.84)</td>
 <td style="text-align: right;">-30.9% (-33.5 to -28.1)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Rainy season (vs.&nbsp;cold-dry)</td>
 <td style="text-align: right;">-6.32 (-7.44 to -5.24)</td>
 <td style="text-align: right;">-30.0% (-33.9 to -25.8)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Hills (2,300 m and up) vs valley floor (typical day)</td>
 <td style="text-align: right;">-4.42 (-4.56 to -4.28)</td>
 <td style="text-align: right;">-22.3% (-22.7 to -21.9)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Saturday (vs.&nbsp;Monday)</td>
 <td style="text-align: right;">1.52 (0.58 to 2.49)</td>
 <td style="text-align: right;">+8.4% (3.1 to 14.0)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Station windier than city (+1 m/s)</td>
 <td style="text-align: right;">-1.49 (-1.65 to -1.35)</td>
 <td style="text-align: right;">-7.7% (-8.3 to -7.0)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">City max temperature (+1 °C)</td>
 <td style="text-align: right;">1.35 (1.12 to 1.58)</td>
 <td style="text-align: right;">+6.6% (5.6 to 7.6)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Altitude (+100 m)</td>
 <td style="text-align: right;">-0.86 (-1.24 to -0.46)</td>
 <td style="text-align: right;">-4.6% (-6.7 to -2.5)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">City midday UV-A (+1 mW/cm²)</td>
 <td style="text-align: right;">-0.73 (-1.23 to -0.22)</td>
 <td style="text-align: right;">-3.8% (-6.4 to -1.1)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Other holiday (vs.&nbsp;non-school weekday)</td>
 <td style="text-align: right;">0.68 (-0.89 to 2.33)</td>
 <td style="text-align: right;">+3.6% (-4.6 to 12.1)</td>
-<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Remote-school period, 2021 (vs.&nbsp;non-school weekday)</td>
 <td style="text-align: right;">-0.51 (-1.77 to 0.91)</td>
 <td style="text-align: right;">-2.6% (-9.2 to 4.7)</td>
-<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Hot-dry season (vs.&nbsp;cold-dry)</td>
 <td style="text-align: right;">0.34 (-0.95 to 1.72)</td>
 <td style="text-align: right;">+1.6% (-4.4 to 8.4)</td>
-<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Day with borrowed weather data</td>
 <td style="text-align: right;">0.30 (0.17 to 0.42)</td>
 <td style="text-align: right;">+1.6% (0.9 to 2.2)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">School day (vs.&nbsp;non-school weekday)</td>
 <td style="text-align: right;">-0.21 (-0.96 to 0.60)</td>
 <td style="text-align: right;">-1.1% (-4.9 to 3.2)</td>
-<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Station more humid than city (+1%)</td>
 <td style="text-align: right;">0.17 (0.15 to 0.19)</td>
 <td style="text-align: right;">+0.9% (0.8 to 0.9)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Sunday (vs.&nbsp;Monday)</td>
 <td style="text-align: right;">-0.13 (-1.00 to 0.76)</td>
 <td style="text-align: right;">-0.7% (-5.4 to 4.3)</td>
-<td style="text-align: left;">Spans Zero</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">Station hotter than city (+1 °C)</td>
 <td style="text-align: right;">0.11 (0.06 to 0.15)</td>
 <td style="text-align: right;">+0.6% (0.3 to 0.8)</td>
-<td style="text-align: left;">Excludes Zero</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">PM2.5 (µg/m³)</td>
 <td style="text-align: left;">City relative humidity (+1%)</td>
 <td style="text-align: right;">0.03 (-0.00 to 0.07)</td>
 <td style="text-align: right;">+0.2% (-0.0 to 0.4)</td>
-<td style="text-align: left;">Spans Zero</td>
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="cell">
@@ -887,6 +959,7 @@ v_d \sim \text{Normal}(0, \tau_{\text{date}})
 </details>
 </div>
 <p>Sunlight and heat move together (correlation 0.71), so their separate ozone effects are less certain than they look; their combined effect is the solid finding.</p>
+<p><strong>Wind by season.</strong> The article compares a still day (6.5 km/h of daily mean city wind) with a breezy one (9.5 km/h), which falls inside every season’s typical range (5th to 95th percentile of daily means: dry winter 5.0-9.6 km/h, dry spring 6.5-10.2, rainy season 5.3-10.0), and the chart draws each season only across that range. Over that step, PM2.5 falls by 32% in the rainy season (95% interval 30% to 35%), 30% in the dry winter (26% to 33%), and 17% in the dry spring (12% to 22%). The intervals don’t overlap, so the spring difference is not a matter of noise.</p>
 <p><strong>The day versus the place.</strong> Each block of the model’s linear predictor was summarized by its standard deviation across station-days on the log scale, expressed as a typical swing, exp(sd) - 1, with blocks combined in quadrature (an approximation that treats them as independent):</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -894,8 +967,8 @@ v_d \sim \text{Normal}(0, \tau_{\text{date}})
 <figcaption>Typical swing in each pollutant from the weather that day, everything else about the day, and the place.</figcaption>
 </figure>
 </div>
-<p><strong>Place.</strong> Only two place contrasts are large and consistent enough to report: southwest basin stations average 12.4 ppb (17%) more ozone than the rest of the city, and stations at 2,300 m and above average 4.4 µg/m³ (22%) less PM2.5 than the valley floor. Their narrow intervals are conditional on these particular stations.</p>
-<p><strong>School days.</strong> On average, school days change neither pollutant detectably. For ozone, they are 2-5 ppb lower on cool days (credible below about 24 °C) and no different on hot ones. The 2021 remote-school period shows no effect either, but without a pre-pandemic baseline it can’t say whether less commuting cleans the air.</p>
+<p><strong>Place.</strong> Only two place contrasts are large and consistent enough to report: southwest basin stations average 12.4 ppb (17%) more ozone than the rest of the city, and stations at 2,300 m and above average 4.4 µg/m³ (22%) less PM2.5 than the valley floor. Their narrow intervals are conditional on these particular stations; for a place without a station, the station-to-station spread is the better guide, about ±10% for PM2.5 and ±9% for ozone. The article’s station and wind charts show a typical day, with the day and week effects at zero. An average day runs slightly higher, by about 2% for ozone and 4% for PM2.5, which moves no station across a color band.</p>
+<p><strong>School days.</strong> On average, school days shift both pollutants by less than about 5% (ozone probably slightly lower), too small to plan around. On cool days ozone is 2-5 ppb lower on school days (credible below about 24 °C), but those days are already well inside <em>Buena</em>; on hot days there is no difference. The 2021 remote-school period shows no effect either, but without a pre-pandemic baseline it can’t say whether less commuting cleans the air.</p>
 <p><strong>Traffic markers.</strong> Gases that come almost entirely from exhaust measure traffic directly, so they show how much PM2.5 responds to a real drop in traffic. Morning rush (6:00-9:59) averages, with 95% block-bootstrap intervals:</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -1080,7 +1153,9 @@ v_d \sim \text{Normal}(0, \tau_{\text{date}})
 </details>
 </div>
 <p>The city mean of 19.8 µg/m³ (station-years from 12.4 to 25.1) is close to AQLI’s satellite values for Mexico City (20.6 to 21.5 in 2021-2023), and AQLI’s own estimate for the city is 1.6 years (<a href="https://aqli.epic.uchicago.edu/countryPage/M%C3%A9xico" title="Energy Policy Institute at the University of Chicago. Air Quality Life Index, country page: México.">country page</a>). Capping every day above 25 µg/m³ at 25 lowers the figure only from 1.44 to 1.29 years; cutting every day by 20% lowers it to 1.05.</p>
+<p>Two cautions on the source. Ebenstein et al.&nbsp;revisit an earlier study of the same policy whose high-degree polynomial fits were <a href="https://sites.stat.columbia.edu/gelman/research/published/rd_china_5.pdf" title="Gelman, A., &amp; Zelizer, A. (2015). Evidence on the deleterious impact of sustained use of polynomial regression on causal inference. Research &amp; Politics, 2(1).">criticized</a> for producing noisy estimates with intervals that are too narrow. And an independent <a href="https://www.nejm.org/doi/full/10.1056/NEJMsa0805646" title="Pope, C. A., Ezzati, M., &amp; Dockery, D. W. (2009). Fine-particulate air pollution and life expectancy in the United States. New England Journal of Medicine, 360, 376-386.">US study</a> found 0.61 ± 0.20 years of life expectancy per 10 µg/m³, which gives about 0.9 years with these data. That is inside the range, and probably low, because it measures the gains from two decades of cleaner air rather than from a lifetime of it.</p>
 <p><strong>Time of day.</strong> The timing figures are city averages of the hourly values by season, without the model, comparing 19:00-20:59 with 9:00 for PM2.5, and 6:00-7:59 with 14:00 for ozone.</p>
+<p><strong>Seasons.</strong> The rainy-season figures are raw seasonal averages of the daily city mean: PM2.5 averages 14.7 µg/m³ in the rainy season, against 21.6 in the dry winter and 23.7 in the dry spring; ozone peaks average 70 ppb, against 72 and 90. The model’s season terms aren’t used here, because they hold temperature, sun, humidity, and wind fixed, which the seasons themselves don’t, and the model has no rain variable.</p>
 </section>
 <section id="what-this-analysis-cant-tell-you" class="level2">
 <h2 class="anchored" data-anchor-id="what-this-analysis-cant-tell-you">What this analysis can’t tell you</h2>
