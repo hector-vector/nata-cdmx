@@ -375,7 +375,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 01_tidy.R: remove runs of 3+ consecutive hours at exactly 1 (per station)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cleaning: remove runs of 3+ consecutive hours at exactly 1 (per station)</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>clean_met <span class="ot">=</span> clean_met <span class="sc">%&gt;%</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(id_station, date_day, hour) <span class="sc">%&gt;%</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id_station) <span class="sc">%&gt;%</span></span>
@@ -394,7 +394,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 02_build_daily_model_data.R</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gap filling: borrowed weather for missing hours</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: short gaps (&lt;= 3 hours) by straight-line interpolation</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> data <span class="sc">%&gt;%</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(id_station, id_parameter, datetime) <span class="sc">%&gt;%</span></span>
@@ -459,7 +459,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 02b_explore_daily_data.R: leave-one-out check of borrowed weather</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Checks: leave-one-out check of borrowed weather</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Leave-one-out average = (sum of everyone - my own value) / (count - 1)</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>loo <span class="ot">=</span> met <span class="sc">%&gt;%</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(date_day, hour, id_parameter, archetype) <span class="sc">%&gt;%</span></span>
@@ -486,7 +486,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 02_build_daily_model_data.R: city-wide and local parts of each weather variable</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gap filling: city-wide and local parts of each weather variable</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>city_weather <span class="ot">=</span> daily_metrics <span class="sc">%&gt;%</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(date_day, id_station, daily_max_temp, daily_mean_wind, daily_mean_rh) <span class="sc">%&gt;%</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(date_day) <span class="sc">%&gt;%</span></span>
@@ -529,7 +529,7 @@ v_d \sim \text{Normal}(0, \tau_{\text{date}})
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 03_model_spec.R: final formulas (continuous predictors are z-scores)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model: final formulas (continuous predictors are z-scores)</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>pm25_formula <span class="ot">=</span> <span class="fu">bf</span>(</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  daily_metric <span class="sc">~</span> season <span class="sc">*</span> z_wind_city <span class="sc">+</span> z_wind_dev <span class="sc">+</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    z_temp_city <span class="sc">+</span> z_temp_dev <span class="sc">+</span> z_rh_city <span class="sc">+</span> z_rh_dev <span class="sc">+</span> z_uva_city <span class="sc">+</span></span>
@@ -551,7 +551,7 @@ v_d \sim \text{Normal}(0, \tau_{\text{date}})
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 03_model_spec.R: priors (log scale)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model: priors (log scale)</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>pm25_priors <span class="ot">=</span> <span class="fu">c</span>(</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="fl">2.9</span>, <span class="fl">0.3</span>), <span class="at">class =</span> <span class="st">"Intercept"</span>),   <span class="co"># exp(2.9) ~ 18 µg/m³</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.3</span>),   <span class="at">class =</span> <span class="st">"b"</span>),           <span class="co"># most effects within -45% to +80%</span></span>
@@ -573,7 +573,7 @@ v_d \sim \text{Normal}(0, \tau_{\text{date}})
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 03b_Bayesian full models.R: sampler settings for every fit</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Model fit: sampler settings for every fit</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">brm</span>(formula, data, <span class="at">family =</span> <span class="fu">lognormal</span>(), <span class="at">prior =</span> priors,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">threads =</span> <span class="fu">threading</span>(<span class="dv">3</span>),</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">6000</span>, <span class="at">warmup =</span> <span class="dv">2000</span>, <span class="at">thin =</span> <span class="dv">2</span>, <span class="at">seed =</span> <span class="dv">123</span>,</span>
@@ -947,7 +947,7 @@ v_d \sim \text{Normal}(0, \tau_{\text{date}})
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 04_Bayesian visualize.R: effects in real units</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Results: effects in real units</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>re_none <span class="ot">=</span> <span class="cn">NA</span>   <span class="co"># population-level predictions: no station, week or date baselines</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>pm25_sample <span class="ot">=</span> pm25_data <span class="sc">%&gt;%</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">1000</span>)</span>
@@ -1144,7 +1144,7 @@ v_d \sim \text{Normal}(0, \tau_{\text{date}})
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 05_article_charts.R: years of life expectancy lost vs the WHO annual guideline</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Health numbers: years of life expectancy lost vs the WHO annual guideline</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>city_mean <span class="ot">=</span> <span class="fl">19.8</span>                                     <span class="co"># mean of station annual means</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>years_lost <span class="ot">=</span> <span class="cf">function</span>(per_10) (city_mean <span class="sc">-</span> <span class="dv">5</span>) <span class="sc">*</span> per_10 <span class="sc">/</span> <span class="dv">10</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">years_lost</span>(<span class="fl">0.98</span>)                                     <span class="co"># 1.45 (central)</span></span>
@@ -1172,7 +1172,7 @@ v_d \sim \text{Normal}(0, \tau_{\text{date}})
 </section>
 <section id="software-and-reproducibility" class="level2">
 <h2 class="anchored" data-anchor-id="software-and-reproducibility">Software and reproducibility</h2>
-<p>The analysis runs as a sequence of R scripts: <code>00_calendarios.R</code> (school calendar), <code>01_tidy.R</code> (cleaning), <code>02_build_daily_model_data.R</code> (gap filling and model datasets), <code>02b</code> and <code>02c</code> (exploratory and descriptive checks), <code>03a</code> (prior simulation), <code>03b</code> (model fits), <code>04</code> (diagnostics, effects, calibration), and <code>05</code> (article charts and health numbers), with seeds fixed at 123.</p>
+<p>Every number and chart comes from one scripted pipeline, run end to end from the raw SIMAT files (cleaning, gap filling, model fits, checks, and charts) with fixed random seeds. The code excerpts above are taken from it.</p>
 <p>It was built in <a href="https://www.r-project.org/" title="R Core Team (2025). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna.">R</a> 4.5.1. The models were fitted in <a href="https://mc-stan.org/" title="Stan Development Team. CmdStan: the command-line interface to Stan.">Stan</a> (CmdStan 2.40.0) through <a href="https://paulbuerkner.com/brms/" title="Bürkner, P.-C. (2017). brms: An R package for Bayesian multilevel models using Stan. Journal of Statistical Software, 80(1).">brms</a> 2.23.0 and <a href="https://mc-stan.org/cmdstanr/" title="Gabry, J., Češnovar, R., Johnson, A., &amp; Bronder, S. cmdstanr: R interface to CmdStan.">cmdstanr</a> 0.9.0, and checked with <a href="https://mc-stan.org/posterior/" title="Bürkner, P.-C., Gabry, J., Kay, M., &amp; Vehtari, A. posterior: Tools for working with posterior distributions.">posterior</a> 1.7.0 and <a href="https://mc-stan.org/bayesplot/" title="Gabry, J., &amp; Mahr, T. bayesplot: Plotting for Bayesian models.">bayesplot</a> 1.16.0. Effects were computed with <a href="https://marginaleffects.com/" title="Arel-Bundock, V., Greifer, N., &amp; Heiss, A. (2024). How to interpret statistical models using marginaleffects for R and Python. Journal of Statistical Software, 111(9).">marginaleffects</a> 1.0.0. Data handling used the <a href="https://www.tidyverse.org/" title="Wickham, H., et al. (2019). Welcome to the tidyverse. Journal of Open Source Software, 4(43), 1686.">tidyverse</a> 2.0.0, <a href="https://cran.r-project.org/package=zoo" title="Zeileis, A., &amp; Grothendieck, G. (2005). zoo: S3 infrastructure for regular and irregular time series. Journal of Statistical Software, 14(6).">zoo</a> 1.9.1, and <a href="https://slider.r-lib.org/" title="Vaughan, D. slider: Sliding window functions.">slider</a> 0.3.3; charts used <a href="https://patchwork.data-imaginist.com/" title="Pedersen, T. L. patchwork: The composer of plots.">patchwork</a> 1.3.2, and this page’s tables <a href="https://yihui.org/knitr/" title="Xie, Y. knitr: A general-purpose package for dynamic report generation in R.">knitr</a>.</p>
 <p>Questions are welcome; you can reach me on <a href="https://www.linkedin.com/in/hector-ruiz-g/">LinkedIn</a>.</p>
 
