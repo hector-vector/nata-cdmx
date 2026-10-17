@@ -69,7 +69,7 @@ Mostly, after three corrections. None of them is documented by SIMAT; each was i
 **"Stuck at 1" weather readings.** Some sensors report exactly 1 (1 °C, 1%, 1 m/s) for days or months, often in all variables at once; one central station sat at 1 °C for more than 5,000 hours. The value 1 seems to work as an undocumented "no data" code. A real reading can be 1 now and then, but not three hours in a row, so runs of three or more were set to missing. That removed about 4-6% of the weather readings, almost none of them in 2023, which suggests the pattern comes from how each year's file was produced.
 
 ```{r}
-# 01_tidy.R: remove runs of 3+ consecutive hours at exactly 1 (per station)
+# Cleaning: remove runs of 3+ consecutive hours at exactly 1 (per station)
 clean_met = clean_met %>%
   arrange(id_station, date_day, hour) %>%
   group_by(id_station) %>%
@@ -88,7 +88,7 @@ Weather gaps are the biggest data problem here. Most are dead station-years rath
 Gaps of up to three hours are interpolated; longer gaps take the same-hour average of the other stations in the same urban environment, or failing that, of the whole city. Station-days with any borrowed hour (46% for PM2.5, 58% for ozone) are flagged, and the flag enters the model; its estimated effect is small.
 
 ```{r}
-# 02_build_daily_model_data.R
+# Gap filling: borrowed weather for missing hours
 # Step 1: short gaps (<= 3 hours) by straight-line interpolation
 data = data %>%
   arrange(id_station, id_parameter, datetime) %>%
@@ -123,7 +123,7 @@ To test the borrowed values, a leave-one-out check hides each station's own weat
 | Mean wind speed | 34,488 | 0.00 m/s | 0.45 m/s | 0.55 |
 
 ```{r}
-# 02b_explore_daily_data.R: leave-one-out check of borrowed weather
+# Checks: leave-one-out check of borrowed weather
 # Leave-one-out average = (sum of everyone - my own value) / (count - 1)
 loo = met %>%
   group_by(date_day, hour, id_parameter, archetype) %>%
@@ -148,7 +148,7 @@ Borrowed weather is unbiased on average but imprecise for any one station. That 
 - **Local deviation**, the station's value minus the city average. Borrowed values pull it toward zero.
 
 ```{r}
-# 02_build_daily_model_data.R: city-wide and local parts of each weather variable
+# Gap filling: city-wide and local parts of each weather variable
 city_weather = daily_metrics %>%
   distinct(date_day, id_station, daily_max_temp, daily_mean_wind, daily_mean_rh) %>%
   group_by(date_day) %>%
@@ -193,7 +193,7 @@ where $s$ is the station and $d$ the date. The fixed part holds city-wide and lo
 The five urban environments enter as fixed effects (five groups are too few to estimate a spread), and so does year, to absorb trends. Each model also tests one interaction chosen in advance: whether wind clears PM2.5 equally well in every season, and whether the school-day effect on ozone changes with heat.
 
 ```{r}
-# 03_model_spec.R: final formulas (continuous predictors are z-scores)
+# Model: final formulas (continuous predictors are z-scores)
 pm25_formula = bf(
   daily_metric ~ season * z_wind_city + z_wind_dev +
     z_temp_city + z_temp_dev + z_rh_city + z_rh_dev + z_uva_city +
@@ -214,7 +214,7 @@ o3_formula = bf(
 Priors are weakly informative on the log scale: intercepts centered on typical values, normal(0, 0.3) for coefficients (most effects between about -45% and +80%), and exponential(3) for group-level standard deviations.
 
 ```{r}
-# 03_model_spec.R: priors (log scale)
+# Model: priors (log scale)
 pm25_priors = c(
   prior(normal(2.9, 0.3), class = "Intercept"),   # exp(2.9) ~ 18 µg/m³
   prior(normal(0, 0.3),   class = "b"),           # most effects within -45% to +80%
@@ -234,7 +234,7 @@ Data simulated from the priors alone match the observed medians but have far hea
 ## Did the sampler work?
 
 ```{r}
-# 03b_Bayesian full models.R: sampler settings for every fit
+# Model fit: sampler settings for every fit
 brm(formula, data, family = lognormal(), prior = priors,
     chains = 4, cores = 4, threads = threading(3),
     iter = 6000, warmup = 2000, thin = 2, seed = 123,
@@ -301,7 +301,7 @@ read_csv("plots/final/appendix/04_effects_table.csv", show_col_types = FALSE) %>
 :::
 
 ```{r}
-# 04_Bayesian visualize.R: effects in real units
+# Results: effects in real units
 re_none = NA   # population-level predictions: no station, week or date baselines
 set.seed(123)
 pm25_sample = pm25_data %>% slice_sample(n = 1000)
@@ -370,7 +370,7 @@ The top of *Buena* matches the [WHO 2021 guidelines](https://iris.who.int/server
 **Life expectancy.** The [Air Quality Life Index](https://aqli.epic.uchicago.edu/files/Report%20-%20English%20Global%20View.pdf "Energy Policy Institute at the University of Chicago (2025). Air Quality Life Index: Annual Update.") turns [Ebenstein et al. (2017)](https://pmc.ncbi.nlm.nih.gov/articles/PMC5625887/pdf/pnas.201616784.pdf "Ebenstein, A., Fan, M., Greenstone, M., He, G., & Zhou, M. (2017). New evidence on the impact of sustained exposure to air pollution on life expectancy from China's Huai River Policy. PNAS.") into 0.98 years of life expectancy per 10 µg/m³ of lifelong PM2.5. Ebenstein's own estimate is 0.64 years per 10 µg/m³ of PM10 (95% CI 0.21 to 1.07); scaling that interval by AQLI's factor (0.98 / 0.64) gives the range.
 
 ```{r}
-# 05_article_charts.R: years of life expectancy lost vs the WHO annual guideline
+# Health numbers: years of life expectancy lost vs the WHO annual guideline
 city_mean = 19.8                                     # mean of station annual means
 years_lost = function(per_10) (city_mean - 5) * per_10 / 10
 years_lost(0.98)                                     # 1.45 (central)
@@ -406,7 +406,7 @@ Two cautions on the source. Ebenstein et al. revisit an earlier study of the sam
 
 ## Software and reproducibility
 
-The analysis runs as a sequence of R scripts: `00_calendarios.R` (school calendar), `01_tidy.R` (cleaning), `02_build_daily_model_data.R` (gap filling and model datasets), `02b` and `02c` (exploratory and descriptive checks), `03a` (prior simulation), `03b` (model fits), `04` (diagnostics, effects, calibration), and `05` (article charts and health numbers), with seeds fixed at 123.
+Every number and chart comes from one scripted pipeline, run end to end from the raw SIMAT files (cleaning, gap filling, model fits, checks, and charts) with fixed random seeds. The code excerpts above are taken from it.
 
 It was built in [R](https://www.r-project.org/ "R Core Team (2025). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna.") 4.5.1. The models were fitted in [Stan](https://mc-stan.org/ "Stan Development Team. CmdStan: the command-line interface to Stan.") (CmdStan 2.40.0) through [brms](https://paulbuerkner.com/brms/ "Bürkner, P.-C. (2017). brms: An R package for Bayesian multilevel models using Stan. Journal of Statistical Software, 80(1).") 2.23.0 and [cmdstanr](https://mc-stan.org/cmdstanr/ "Gabry, J., Češnovar, R., Johnson, A., & Bronder, S. cmdstanr: R interface to CmdStan.") 0.9.0, and checked with [posterior](https://mc-stan.org/posterior/ "Bürkner, P.-C., Gabry, J., Kay, M., & Vehtari, A. posterior: Tools for working with posterior distributions.") 1.7.0 and [bayesplot](https://mc-stan.org/bayesplot/ "Gabry, J., & Mahr, T. bayesplot: Plotting for Bayesian models.") 1.16.0. Effects were computed with [marginaleffects](https://marginaleffects.com/ "Arel-Bundock, V., Greifer, N., & Heiss, A. (2024). How to interpret statistical models using marginaleffects for R and Python. Journal of Statistical Software, 111(9).") 1.0.0. Data handling used the [tidyverse](https://www.tidyverse.org/ "Wickham, H., et al. (2019). Welcome to the tidyverse. Journal of Open Source Software, 4(43), 1686.") 2.0.0, [zoo](https://cran.r-project.org/package=zoo "Zeileis, A., & Grothendieck, G. (2005). zoo: S3 infrastructure for regular and irregular time series. Journal of Statistical Software, 14(6).") 1.9.1, and [slider](https://slider.r-lib.org/ "Vaughan, D. slider: Sliding window functions.") 0.3.3; charts used [patchwork](https://patchwork.data-imaginist.com/ "Pedersen, T. L. patchwork: The composer of plots.") 1.3.2, and this page's tables [knitr](https://yihui.org/knitr/ "Xie, Y. knitr: A general-purpose package for dynamic report generation in R.").
 
