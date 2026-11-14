@@ -1,3 +1,5 @@
 model,n_parameters,max_rhat,n_rhat_above_1.01,min_ess,n_ess_below_400,divergences,pct_max_treedepth,min_bfmi,max_bfmi
-PM2.5,2147,1.01,1,820,0,0,0,1.08,1.16
-Ozone,2160,1.01,0,1026,0,0,0,1.06,1.21
+"PM2.5, days (stage 2)",333,1.005,0,580,0,0,0,0.65,0.76
+"PM2.5, stations (stage 3)",10,1.001,0,3983,0,0,0,0.77,0.83
+"Ozone, days (stage 2)",335,1.006,0,569,0,0,0,0.48,0.55
+"Ozone, stations (stage 3)",10,1.001,0,4546,0,0,0,0.84,0.93
