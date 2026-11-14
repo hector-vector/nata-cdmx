@@ -27,7 +27,7 @@ The analysis is observational. The model describes how pollution moves with weat
 | Particles peak mid-morning, ozone early afternoon; evenings have about 30% fewer particles | Hourly city averages | Strong | City average, not your street |
 | Hot, sunny spring days bring more *Mala* ozone days | Daily shares by temperature; model about +6% per °C, +11% for a hot, bright spring day | Strong | Heat and sun move together |
 | Rainy season: particles about a third lower, ozone about as high as in winter | Seasonal city averages | Strong | Season, not rain itself |
-| Wind clears particles far less in spring | Model | Moderate | Spring interval is wide (3% to 15%) |
+| Wind clears particles far less in spring | Model; each year 2021-2025 | Moderate | Not so in early 2026 (see the 2026 test) |
 | January 1 is the dirtiest day for particles | Daily data, 2022-2025 | Strong | Four winters |
 | Quiet Sundays cut exhaust far more than particles | Morning-rush averages, block bootstrap | Strong | Mornings only |
 | The day matters more than the neighborhood | Model variance split | Strong in direction | The split is approximate |
@@ -209,6 +209,8 @@ Three tests, from the most controlled to the most demanding.
 | PM2.5 *Mala* or worse | 0.00 to 0.13 | -0.17 to 0.01 | 0.11 | -0.11 |
 
 For ozone, the weather and calendar beat both benchmarks in every year and in every season of 2026, and the overall 2026 level landed within about 5% of what the model expected. For PM2.5, they beat the usual share, but for *Mala* days knowing whether yesterday was *Mala* does as well or better: particle episodes run for several days, which is behind the article's advice that bad days come in runs. The 2026 winter was unusually dirty for particles, about 20% above what its weather would suggest. The 2026 test covers January to July only (two dry seasons and the start of the rainy one, no fireworks days) and will be rerun when the year is complete.
+
+One finding was also checked on its own, because the idea that wind works differently by season came from exploring these same 2021-2025 data. With a rule written before looking, the 2026 data alone were asked whether wind clears particles less in spring than in winter. They didn't: going from 6.5 to 9.5 km/h cut PM2.5 by about 23% in spring 2026 (95% interval 15% to 37%) and by 20% in January and February (2% to 35%). The same simple calculation shows spring clearing less than winter in each year from 2021 to 2025, by 13 to 35 percentage points, so 2026 is the first exception, after a winter that was also unusually dirty. Whether it is an odd year or a change should be clearer once the rest of 2026 is published.
 
 **Sensitivity.** Refitting the day model with more flexible curves, or with every prior twice as wide, moves the hot-and-bright ozone contrast and the wind drops by one percentage point or less.
 
