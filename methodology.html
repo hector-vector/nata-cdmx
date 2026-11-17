@@ -491,8 +491,56 @@ window.Quarto = {
 </div>
 <section id="why-not-something-simpler" class="level3">
 <h3 class="anchored" data-anchor-id="why-not-something-simpler">Why not something simpler?</h3>
-<p>The natural reference is a single regression of all station-days with station fixed effects, the same weather, calendar, and local terms, and standard errors clustered by month; it fits in a second. On the real data it gives the same picture, with each headline within about six percentage points. On the simulated data described below, though, its weather-effect estimates missed the truth by 20 to 30% more than the staged model’s, and its 95% intervals contained the truth only about 91% of the time (88% for the worst single effect), against 97 to 99% for the staged model. A version decided in advance to close that gap, with smooth curves, every day weighted equally, and a small-cluster correction, did worse (90 to 92%, 84% at worst). Modeling the day-to-day dependence directly is what makes the day-level estimates both sharper and honest, and the ±5% rule depends on their intervals.</p>
-<p>At the other extreme, a single Bayesian model of all station-days gives the same picture as the staged one but took two to four hours per fit, against 10 to 17 minutes, which is what made the checks below affordable.</p>
+<p>The staged model is one of a sequence fitted to the same data, from a single regression up to a single Bayesian model of every station-day. Each was run on the same simulated data with known answers, described below, and on the real data:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Model</th>
+<th style="text-align: left;">Fit time</th>
+<th style="text-align: right;">Simulated data: 95% intervals for weather effects that contained the truth (PM2.5 / ozone)</th>
+<th style="text-align: right;">Simulated data: typical miss, log scale</th>
+<th style="text-align: left;">Real data</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">One regression of all station-days, with station fixed effects and month-clustered standard errors</td>
+<td style="text-align: left;">about a second</td>
+<td style="text-align: right;">91% / 92%</td>
+<td style="text-align: right;">0.051 / 0.036</td>
+<td style="text-align: left;">Same picture; each headline within about 6 percentage points</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">The staged structure without the Bayesian layer: penalized regression with day-to-day carry-over</td>
+<td style="text-align: left;">seconds</td>
+<td style="text-align: right;">95% / 95%</td>
+<td style="text-align: right;">0.047 / 0.032</td>
+<td style="text-align: left;">Same effects and ±5% verdicts; day-versus-place intervals about 15% narrower</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>The staged Bayesian model used here</strong></td>
+<td style="text-align: left;">10 to 17 minutes</td>
+<td style="text-align: right;">97% / 99%</td>
+<td style="text-align: right;">0.040 / 0.030</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">One Bayesian model of all station-days</td>
+<td style="text-align: left;">2 to 4 hours</td>
+<td style="text-align: right;">not run</td>
+<td style="text-align: right;"></td>
+<td style="text-align: left;">Same picture</td>
+</tr>
+</tbody>
+</table>
+<p>The single regression treats every station-day as separate information, so its intervals for the weather effects are too narrow. A version of it decided in advance to close that gap, with smooth curves, every day weighted equally, and a small-cluster correction, did worse (90 to 92%). What fixes it is modeling the day-to-day dependence directly, which both staged versions do. The Bayesian layer then adds a little accuracy and carries the uncertainty in the variance components into summaries built from them, such as the day-versus-place comparison, where the simpler version treats those variances as known. It changes no finding in the article. It is kept because a comparison rule written before the simpler version was run required its intervals to be at least 85% as wide, and its day-versus-place intervals fell just short. The simulated results for the staged Bayesian model rest on 16 datasets, the others on 200.</p>
 </section>
 </section>
 <section id="did-the-sampler-work" class="level2">
@@ -634,7 +682,7 @@ window.Quarto = {
 </section>
 <section id="what-did-the-model-find" class="level2">
 <h2 class="anchored" data-anchor-id="what-did-the-model-find">What did the model find?</h2>
-<p>The full table of effects answers, row by row: <em>if this one thing changes and everything else stays as it was, how much does the expected level change, on average?</em> These are adjusted associations, with 95% intervals; continuous effects are per unit, and the year and urban-environment controls are omitted. A change within about ±5% (about 1 µg/m³ of PM2.5 or 4 ppb of ozone on a typical day) is treated as too small to plan around, but only when its whole 95% interval sits inside that range; when the interval crosses the edge, the data don’t decide either way.</p>
+<p>The full table of effects answers, row by row: <em>if this one thing changes and everything else stays as it was, how much does the expected level change, on average?</em> These are adjusted associations, with 95% intervals (equal-tailed posterior intervals for the Bayesian stages; estimate ± 1.96 station-clustered standard errors for the first-stage local-weather rows); continuous effects are per unit, and the year and urban-environment controls are omitted. A change within about ±5% (about 1 µg/m³ of PM2.5 or 4 ppb of ozone on a typical day) is treated as too small to plan around, but only when its whole 95% interval sits inside that range; when the interval crosses the edge, the data don’t decide either way.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="All model effects">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
