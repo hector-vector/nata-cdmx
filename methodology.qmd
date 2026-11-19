@@ -215,7 +215,7 @@ Three tests, from the most controlled to the most demanding.
 | PM2.5 above *Buena* | 0.14 to 0.24 | 0.03 to 0.11 | 0.16 | 0.08 |
 | PM2.5 *Mala* or worse | 0.00 to 0.13 | -0.17 to 0.01 | 0.11 | -0.11 |
 
-For ozone, the weather and calendar beat both benchmarks in every year and in every season of 2026, and the overall 2026 level landed within about 5% of what the model expected. For PM2.5, they beat the usual share, but for *Mala* days knowing whether yesterday was *Mala* does as well or better: particle episodes run for several days, which is behind the article's advice that bad days come in runs. The 2026 winter was unusually dirty for particles, about 20% above what its weather would suggest. The 2026 test covers January to July only (two dry seasons and the start of the rainy one, no fireworks days) and will be rerun when the year is complete.
+For ozone, the weather and calendar beat both benchmarks in every year and in every season of 2026, and the overall 2026 level landed within about 5% of what the model expected. For PM2.5, they beat the usual share, but for *Mala* days knowing whether yesterday was *Mala* does as well or better: particle episodes run for several days, which is behind the article's advice that bad days come in runs. The 2026 winter was unusually dirty for particles, about 20% above what its weather would suggest. The 2026 test covers January to July only (two dry seasons and the start of the rainy one, no fireworks days) and will be rerun when the year is complete. The probabilities themselves are well calibrated for ozone (predicted and observed shares of *Mala* days within 0.01 to 0.08 on average across forecast years) and looser for PM2.5 (0.04 to 0.11), whose multi-day episodes the forecast does not see coming.
 
 One finding was also checked on its own, because the idea that wind works differently by season came from exploring these same 2021-2025 data. With a rule written before looking, the 2026 data alone were asked whether wind clears particles less in spring than in winter. They didn't: going from 6.5 to 9.5 km/h cut PM2.5 by about 23% in spring 2026 (95% interval 15% to 37%) and by 20% in January and February (2% to 35%). The same simple calculation shows spring clearing less than winter in each year from 2021 to 2025, by 13 to 35 percentage points, so 2026 is the first exception, after a winter that was also unusually dirty. Spring 2026 was also the calmest of the six and had fewer working wind sensors; on the same sensors and stations the result is unchanged, and single years vary widely: over the same range of winds, spring 2023 showed no gap either. Whether 2026 is an odd year or a change should be clearer once the rest of the year is published.
 
@@ -223,7 +223,7 @@ One finding was also checked on its own, because the idea that wind works differ
 
 ## What did the model find?
 
-The full table of effects answers, row by row: *if this one thing changes and everything else stays as it was, how much does the expected level change, on average?* These are adjusted associations, with 95% intervals (equal-tailed posterior intervals for the Bayesian stages; estimate ± 1.96 station-clustered standard errors for the first-stage local-weather rows); continuous effects are per unit, and the year and urban-environment controls are omitted. A change within about ±5% (about 1 µg/m³ of PM2.5 or 4 ppb of ozone on a typical day) is treated as too small to plan around, but only when its whole 95% interval sits inside that range; when the interval crosses the edge, the data don't decide either way.
+The full table of effects answers, row by row: *if this one thing changes and everything else stays as it was, how much does the expected level change, on average?* These are adjusted associations, with 95% intervals (equal-tailed posterior intervals for the Bayesian stages; estimate ± 1.96 station-clustered standard errors for the first-stage local-weather rows); continuous effects are per unit, and the year and urban-environment controls are omitted. A change within about ±5% (about 1 µg/m³ of PM2.5 or 4 ppb of ozone on a typical day) is treated as too small to plan around, but only when its whole 95% interval sits inside that range; when the interval crosses the edge, the data don't decide either way. Because interval endpoints are themselves noisy, the table also states each verdict as probabilities: from the posterior draws, the chance the effect is below −5%, within ±5%, or above +5%. The first-stage rows are not Bayesian, so they have none.
 
 ::: {.callout-note collapse="true" title="All model effects"}
 ```{r}
@@ -234,9 +234,12 @@ read_csv("plots/final/appendix/04_effects_table.csv", show_col_types = FALSE) %>
     Pollutant,
     Effect = Driver,
     `Change (units)` = sprintf("%.2f (%.2f to %.2f)", Absolute_Shift, `95%_CI_Lower`, `95%_CI_Upper`),
-    `Change (%)` = sprintf("%+.1f%% (%.1f to %.1f)", Pct_Change, Pct_Low, Pct_High)
+    `Change (%)` = sprintf("%+.1f%% (%.1f to %.1f)", Pct_Change, Pct_Low, Pct_High),
+    `Chance below −5% / within ±5% / above +5%` = if_else(
+      is.na(P_within_5), "—",
+      sprintf("%.0f%% / %.0f%% / %.0f%%", 100 * P_below_5, 100 * P_within_5, 100 * P_above_5))
   ) %>%
-  kable(align = "llrr")
+  kable(align = "llrrr")
 ```
 :::
 
@@ -248,7 +251,7 @@ read_csv("plots/final/appendix/04_effects_table.csv", show_col_types = FALSE) %>
 
 ![Typical swing in each pollutant from the weather that day, the calendar, unexplained day-to-day swings, and the place.](plots/final/appendix/05_day_vs_place.png){fig-alt="Chart comparing the typical swing in each pollutant explained by the weather that day, the calendar, unexplained day-to-day swings, and where you live. For both pollutants, the day as a whole swings levels more than the place."}
 
-**Place.** Only two place contrasts are large and consistent enough to report. Southwest basin stations average 12.1 ppb (17%) more ozone than the city's other stations. The six PM2.5 stations at 2,300 m and above average 4.1 µg/m³ (21%) less than those on the valley floor; within the same urban environment, each 100 m of altitude goes with about 5% less PM2.5 (2.8% to 6.9%), so altitude explains part of the gap, though not precisely enough to clear the ±5% rule. These comparisons describe these particular stations; for a place without a station, the station-to-station spread left after environment and altitude is the better guide, about ±10% for PM2.5 and ±9% for ozone. The five urban environments stay in the model as a control, but once altitude and each station's baseline are accounted for, three of them barely differ, and station baselines show no relationship with built-up or vegetated land cover (r ≈ 0).
+**Place.** Only two place contrasts are large and consistent enough to report. Southwest basin stations average 12.1 ppb (17%) more ozone than the city's other stations. The six PM2.5 stations at 2,300 m and above average 4.1 µg/m³ (21%) less than those on the valley floor; within the same urban environment, each 100 m of altitude goes with about 5% less PM2.5 (2.8% to 6.9%), so altitude explains part of the gap, though not precisely enough to clear the ±5% rule (a 46% chance the effect is larger than 5%, 54% that it is within ±5%). These comparisons describe these particular stations; for a place without a station, the station-to-station spread left after environment and altitude is the better guide, about ±10% for PM2.5 and ±9% for ozone. The five urban environments stay in the model as a control, but once altitude and each station's baseline are accounted for, three of them barely differ, and station baselines show no relationship with built-up or vegetated land cover (r ≈ 0).
 
 **School days.** School days are too small to plan around for both pollutants: PM2.5 +0.6% (-3.1% to +4.0%) and ozone -1.3% (-3.8% to +1.1%), compared with weekdays without school. For ozone the gap depends on heat: on cool spring days (14-20 °C) ozone runs 3-4 ppb lower on school days, days that are already well inside *Buena*, and above about 24 °C the data can't tell it apart from no difference. The 2021 remote-school period settles nothing: the estimate runs from 5% lower to 9% higher for PM2.5 and from 3% lower to 7% higher for ozone, and without a pre-pandemic baseline it couldn't say whether less commuting cleans the air anyway.
 
